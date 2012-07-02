@@ -2,20 +2,21 @@
 <html>
 <head>
     <title>Twitter Fontana</title>
-    <script src="js/modernizr.min.js"></script>
-    <link rel="stylesheet" href="css/all.css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Cherry+Cream+Soda' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <script src="js/lib/modernizr.min.js"></script>
+    <link href="css/all.css" rel="stylesheet">
+    <link href="js/lib/farbtastic/farbtastic.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Cherry+Cream+Soda" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Slackey" rel="stylesheet">
 </head>
 <body>
 
     <header id="header">
         <h1>Twitter Fontana</h1>
         <ul class="tools">
-            <li><a href="#" onclick="settings.toggleSettings()" class="settings" title="Settings"><span>Settings</span></a></li>
-            <li><a href="#" onclick="utils.requestFullscreen(document.getElementById('tweets'))" class="fullscreen" title="Fullscreen"><span>Fullscreen</span></a></li>
+            <li><a href="#" class="settings" title="Settings"><span>Settings</span></a></li>
+            <li><a href="#" class="fullscreen" title="Fullscreen"><span>Fullscreen</span></a></li>
         </ul>
     </header>
 
@@ -27,9 +28,9 @@
 
     <footer id="footer">
         <section id="settings">
-            <h1><a href="#" onclick="settings.hideSettings()" class="settings" title="Settings">Customize your stream</a></h1>
+            <h1><a href="#" class="settings" title="Settings">Customize your stream</a></h1>
 
-            <form action="" method="get">
+            <form action="#" id="settingsForm">
                 <fieldset class="main">
                     <legend>Main</legend>
                         <label for="search">Your search term / hashtag</label>
@@ -44,7 +45,9 @@
                             </select>
                         </div>
                 </fieldset>
+            </form>
 
+            <form action="#" id="appearanceForm">
                 <fieldset class="appearance">
                     <legend>Appearance</legend>
 
@@ -61,7 +64,7 @@
                     </div>
                     <label>Message font color</label>
                     <div class="field">
-                        <input type="text" name="tweets_color" value="#fff" placeholder="Pick a color...">
+                        <input type="text" class="color" name="tweets_color" value="#ffffff" placeholder="Pick a color...">
                     </div>
                 </fieldset>
 
@@ -70,7 +73,7 @@
 
                     <label>Background color</label>
                     <div class="field">
-                        <input type="text" name="bg_color" value="#76ab30" placeholder="Pick a color...">
+                        <input type="text" class="color" name="bg_color" value="#76ab30" placeholder="Pick a color...">
                     </div>
                     <label>Background image url</label>
                     <div class="field">
@@ -78,37 +81,31 @@
                     </div>
                     <label>Box color</label>
                     <div class="field">
-                        <input type="text" name="tweets_bg" value="rgba(255, 255, 255, .10)" placeholder="Pick a color...">
+                        <input type="text" class="color" name="tweets_bg" value="#80b43c" placeholder="Pick a color...">
                     </div>
                 </fieldset>
+            </form>
 
-                <fieldset class="button">
-                    <label for="apply">Apply</label>
-                    <div class="field">
-                        <input type="button" id="apply" name="apply" value="OK" onclick="applySettings()">
-                    </div>
-                </fieldset>
-
+            <form>
                 <fieldset class="url">
                     <div class="field-group">
-                        <label>Settings url</label>
+                        <label for="settings_url">Settings url</label>
                         <div class="field">
-                            <input type="text" name="settings_url" readonly>
+                            <input type="text" name="settings_url" id="settings_url" readonly>
                         </div>
                     </div>
                 </fieldset>
             </form>
         </section>
     </footer>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery.animate.transform.js"></script>
-    <script src="js/jquery.tmpl.min.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/jquery.animate.transform.js"></script>
+    <script src="js/lib/jquery.tmpl.min.js"></script>
+    <script src="js/lib/farbtastic/farbtastic.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/effects.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/wall.js"></script>
     <script src="js/all.js"></script>
-
 </body>
 </html>
