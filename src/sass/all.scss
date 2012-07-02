@@ -7,7 +7,7 @@ body {
 }
 
 #header {
-    background: rgba(0, 0, 0, .1) url(../img/twitter.png) no-repeat 20px 50%;
+    background: rgba(0, 0, 0, .4) url(../img/twitter.png) no-repeat 20px 50%;
     position: relative;
     z-index: 10;
     @include clearfix;
@@ -61,7 +61,7 @@ body {
     display: none;
     color: #fff;
     text-shadow: -1px -1px 0 rgba(0,0,0,.1);
-    background: rgba(0, 0, 0, .33);
+    background: rgba(0, 0, 0, .4);
     padding: 10px 0 60px 0;
 
     h1 {
@@ -78,7 +78,7 @@ body {
         padding-left: 32px;
     }
 
-    fieldset {
+    #settingsForm, #appearanceForm, fieldset {
         display: inline-block;
         vertical-align: top;
         text-align: left;
@@ -106,11 +106,11 @@ body {
     .url {
         margin-top: 20px;
         display: block;
-        text-align: center;   
+        text-align: center;
 
         input {
             width: 66%;
-        }     
+        }
     }
 
     .swatch {

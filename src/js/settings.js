@@ -1,5 +1,5 @@
 var settings = (function () {
-    var panel = $("#settings")
+    var panel = $("#settings");
     var fields = $("input:text:not([name=settings_url]), select", panel);
 
     /**
@@ -33,7 +33,7 @@ var settings = (function () {
 
     /**
      * Collect the current settings from the form fields
-     */ 
+     */
     var getCurrentSettings = function () {
         var settings = {};
         fields.each(function (i, f) {
@@ -80,20 +80,27 @@ var settings = (function () {
         pickerElement.hide();
         swatch.click(function () { input.focus() });
         swatch.css('background-color', input.val());
+        picker.setColor(input.val());
 
         input.focus(function () {
             pickerElement.fadeIn('fast');
             picker.linkTo(function (color) {
                 swatch.css('background-color', color);
-                input.val(color);
+                input.val(color).change();
             });
         });
-        
+
         input.blur(function () {
             pickerElement.fadeOut('fast');
+            picker.setColor(input.val());
+            swatch.css('background-color', input.val());
         });
-    });
 
+        input.keyup(function () {
+            picker.setColor(input.val());
+            swatch.css('background-color', input.val());
+        })
+    });
 
     return {
         'showSettings': showSettings,

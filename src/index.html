@@ -30,7 +30,7 @@
         <section id="settings">
             <h1><a href="#" class="settings" title="Settings">Customize your stream</a></h1>
 
-            <form action="#" method="get" id="settingsForm">
+            <form action="#" id="settingsForm">
                 <fieldset class="main">
                     <legend>Main</legend>
                         <label for="search">Your search term / hashtag</label>
@@ -45,7 +45,9 @@
                             </select>
                         </div>
                 </fieldset>
+            </form>
 
+            <form action="#" id="appearanceForm">
                 <fieldset class="appearance">
                     <legend>Appearance</legend>
 
@@ -79,17 +81,12 @@
                     </div>
                     <label>Box color</label>
                     <div class="field">
-                        <input type="text" class="color" name="tweets_bg" value="#ffffff" placeholder="Pick a color...">
+                        <input type="text" class="color" name="tweets_bg" value="#80b43c" placeholder="Pick a color...">
                     </div>
                 </fieldset>
+            </form>
 
-                <fieldset class="button">
-                    <label for="apply">Apply</label>
-                    <div class="field">
-                        <input type="submit" id="apply" name="apply" value="OK">
-                    </div>
-                </fieldset>
-
+            <form>
                 <fieldset class="url">
                     <div class="field-group">
                         <label for="settings_url">Settings url</label>
@@ -98,7 +95,6 @@
                         </div>
                     </div>
                 </fieldset>
-                <div id="picker" style="float: right;"></div>
             </form>
         </section>
     </footer>

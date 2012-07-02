@@ -1,12 +1,15 @@
 var wall = new Wall("#tweets", settings.getCurrentSettings());
 
-function applySettings () {
+function resetWall() {
 	wall.clear();
-	wall.settings(settings.getCurrentSettings());
-	$("#settings input[name=settings_url]").val(settings.generateSettingsUrl());
 	wall.getTweets(function() {
 	    wall.animateTweets();
 	});
+}
+
+function applySettings () {
+	wall.settings(settings.getCurrentSettings());
+	$("#settings input[name=settings_url]").val(settings.generateSettingsUrl());
 }
 
 (function () {
@@ -22,8 +25,15 @@ function applySettings () {
 		utils.requestFullscreen(document.getElementById('tweets'));
 	});
 
-	// Apply the settings when the settings form is submitted
+	// Apply the settings and reset the wall when the settings form is submitted
 	$('#settingsForm').submit(function (e) {
+		e.preventDefault();
+		applySettings();
+		resetWall();
+	});
+
+	// Apply the settings when the appearance form is submitted
+	$('#appearanceForm').submit(function (e) {
 		e.preventDefault();
 		applySettings();
 	});
@@ -33,5 +43,14 @@ function applySettings () {
 		$(this).select();
 	});
 
+	$("input, select", $('#settingsForm')).change(function () {
+		$('#settingsForm').submit();
+	});
+
+	$("input, select", $('#appearanceForm')).change(function () {
+		$('#appearanceForm').submit();
+	});
+
 	applySettings();
+	resetWall();
 })();

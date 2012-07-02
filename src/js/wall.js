@@ -135,11 +135,13 @@ function Wall(container, options) {
         switch(name){
             case 'effect':
                 if(Effect[value]) {
-                    if(typeof(options.effect) == 'object')
-                        options.effect.destroy();
+                    if (Effect[value] != options.effect) {
+                        if(typeof(options.effect) == 'object')
+                            options.effect.destroy();
 
-                    options.effect = Effect[value];
-                    options.effect.setup(container, options.list);
+                        options.effect = Effect[value];
+                        options.effect.setup(container, options.list);
+                    }
                 }
                 break;
 
