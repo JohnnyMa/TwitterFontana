@@ -3,7 +3,7 @@ var settings = (function () {
     var fields = $("input:text:not([name=settings_url]), select", panel);
 
     /**
-     * load settings from the url
+     * Load settings from the url
      */
     var loadSettingsFromUrl = function () {
         var settings = {};
@@ -32,7 +32,7 @@ var settings = (function () {
     }
 
     /**
-     * collect the current settings from the form fields
+     * Collect the current settings from the form fields
      */ 
     var getCurrentSettings = function () {
         var settings = {};
@@ -42,6 +42,9 @@ var settings = (function () {
         return settings;
     }
 
+    /**
+     * Settings panel display methods
+     */
     var showSettings = function () {
         panel.slideDown();
     }
@@ -66,6 +69,31 @@ var settings = (function () {
     else {
         loadSettingsFromUrl();
     }
+
+    // initialize the color pickers
+    $('.color', panel).each(function () {
+        var input = $(this);
+        var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
+        var swatch = $('<div class="swatch"></div>').insertAfter($(this));
+        var picker = $.farbtastic(pickerElement);
+
+        pickerElement.hide();
+        swatch.click(function () { input.focus() });
+        swatch.css('background-color', input.val());
+
+        input.focus(function () {
+            pickerElement.fadeIn('fast');
+            picker.linkTo(function (color) {
+                swatch.css('background-color', color);
+                input.val(color);
+            });
+        });
+        
+        input.blur(function () {
+            pickerElement.fadeOut('fast');
+        });
+    });
+
 
     return {
         'showSettings': showSettings,

@@ -1,17 +1,5 @@
 var wall = new Wall("#tweets", settings.getCurrentSettings());
 
-$('.settings').click(function (e) {
-	e.preventDefault(); settings.toggleSettings();
-});
-
-$('.fullscreen').click(function (e) {
-	e.preventDefault(); utils.requestFullscreen(document.getElementById('tweets'));
-});
-
-$('#settingsForm').submit(function (e) {
-	e.preventDefault(); applySettings();
-});
-
 function applySettings () {
 	wall.clear();
 	wall.settings(settings.getCurrentSettings());
@@ -20,4 +8,30 @@ function applySettings () {
 	    wall.animateTweets();
 	});
 }
-applySettings();
+
+(function () {
+	// Make settings buttons toggle the settings panel
+	$('.settings').click(function (e) {
+		e.preventDefault();
+		settings.toggleSettings();
+	});
+
+	// Make fullscreen buttons work
+	$('.fullscreen').click(function (e) {
+		e.preventDefault();
+		utils.requestFullscreen(document.getElementById('tweets'));
+	});
+
+	// Apply the settings when the settings form is submitted
+	$('#settingsForm').submit(function (e) {
+		e.preventDefault();
+		applySettings();
+	});
+
+	// Select the settings url on click
+	$('#settings_url').bind('click', function () {
+		$(this).select();
+	});
+
+	applySettings();
+})();

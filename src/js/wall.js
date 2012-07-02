@@ -7,13 +7,13 @@ function Wall(container, options) {
         search_url: 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?',
         list: $('> ol', container),
 
-        update_interval : 10,  // seconds
+        update_interval : 30,  // seconds
         tweet_interval: 6,  // seconds
 
         effect: 'Fade',
 
-        tweet_template: '<div class="tweet"><q>{{html html}}</q><figure><img src="${profile_image_url}" width="64" height="64"></figure>  \
-                            <cite>@${from_user}</cite> <time>${utils.prettyDate(created_at)}</time></div>',
+        tweet_template: '<div class="tweet"><q>{{html html}}</q><figure><img src="${profile_image_url}" width="64" height="64"></figure> \
+                         <cite>@${from_user}</cite> <time>${utils.prettyDate(created_at)}</time></div>',
 
         style_template: '.wall { background: ${bg_color} url(${bg_image}) no-repeat center center; background-size: contain; } \
                          .tweet { background: ${tweets_bg}; color: ${tweets_color}; font-family: ${font_face||"sans-serif"}; } \
@@ -22,7 +22,6 @@ function Wall(container, options) {
 
     // setup the effect
     settings(options);
-
 
     var _update_timer;
     var _animation_timer;

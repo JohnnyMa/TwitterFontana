@@ -4,6 +4,7 @@
     <title>Twitter Fontana</title>
     <script src="js/lib/modernizr.min.js"></script>
     <link href="css/all.css" rel="stylesheet">
+    <link href="js/lib/farbtastic/farbtastic.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Cherry+Cream+Soda" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
@@ -78,7 +79,7 @@
                     </div>
                     <label>Box color</label>
                     <div class="field">
-                        <input type="text" class="color" name="tweets_bg" value="rgba(255, 255, 255, .1)" placeholder="Pick a color...">
+                        <input type="text" class="color" name="tweets_bg" value="#ffffff" placeholder="Pick a color...">
                     </div>
                 </fieldset>
 
@@ -91,18 +92,20 @@
 
                 <fieldset class="url">
                     <div class="field-group">
-                        <label>Settings url</label>
+                        <label for="settings_url">Settings url</label>
                         <div class="field">
-                            <input type="text" name="settings_url" readonly>
+                            <input type="text" name="settings_url" id="settings_url" readonly>
                         </div>
                     </div>
                 </fieldset>
+                <div id="picker" style="float: right;"></div>
             </form>
         </section>
     </footer>
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/jquery.animate.transform.js"></script>
     <script src="js/lib/jquery.tmpl.min.js"></script>
+    <script src="js/lib/farbtastic/farbtastic.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/effects.js"></script>
     <script src="js/settings.js"></script>

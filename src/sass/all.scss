@@ -61,7 +61,7 @@ body {
     display: none;
     color: #fff;
     text-shadow: -1px -1px 0 rgba(0,0,0,.1);
-    background: rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, .33);
     padding: 10px 0 60px 0;
 
     h1 {
@@ -89,6 +89,10 @@ body {
         display: none;
     }
 
+    .field {
+        position: relative;
+    }
+
     input, select {
         font: 12px 'Open Sans', sans-serif;
         background: #fff;
@@ -107,6 +111,29 @@ body {
         input {
             width: 66%;
         }     
+    }
+
+    .swatch {
+        border: 1px solid #ccc;
+        @include border-radius(3px);
+        width: 16px;
+        height: 16px;
+        right: 2px;
+        top: 4px;
+        position: absolute;
+    }
+
+    .picker {
+        position: absolute;
+        width: 195px;
+        height: 195px;
+        top: -95px;
+        left: 101%;
+        z-index: 10;
+        background-color: rgba(0, 0, 0, .75);
+        padding: 5px;
+        border: 1px solid transparent;
+        @include border-radius(3px);
     }
 }
 
