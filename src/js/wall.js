@@ -41,7 +41,7 @@ function Wall(container, options) {
                 }
 
                 if($.isFunction(callback)) {
-                    callback.apply(self, data);
+                    callback.call(self, data);
                 }
             }
 
