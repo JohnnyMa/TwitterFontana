@@ -34,7 +34,6 @@ var Fontana = window.Fontana || {};
 Fontana.datasources = (function ($) {
 	var Static, Twitter;
 
-
 	/**
 	 * Static datasource.
 	 *
@@ -42,11 +41,11 @@ Fontana.datasources = (function ($) {
 	 */
 	Static = function (data) {
 		this.data = data;
-	}
+	};
 
 	Static.prototype.getMessages = function (callback) {
 		callback(this.data);
-	}
+	};
 
 
 	/**
@@ -55,22 +54,22 @@ Fontana.datasources = (function ($) {
 	 * Constructor takes a query for Twitter's search API.
 	 */
 	Twitter = function (q) {
-		this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?',
+		this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
 		this.q = q;
 		this.data = [];
-	}
+	};
 
 	Twitter.prototype.getMessages = function (callback) {
-		$.getJSON(this.search_url, {q: this.q}, function(data, status) {
-            if(status == 'success') {
-            	callback(data.results);
+		$.getJSON(this.search_url, {q: this.q}, function (data, status) {
+            if (status === 'success') {
+                callback(data.results);
             }
         });
-	}
+	};
 
 	return {
 		'Static': Static,
 		'Twitter': Twitter
-	}
+	};
 
 }(window.jQuery));

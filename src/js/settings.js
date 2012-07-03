@@ -8,7 +8,7 @@ After construction it will contain the default settings for Fontana.
 Settings can be retrieved using the `get` instance method. It takes the
 settings key as an argument.
 
-Settings can be changed using the `set` method. It takes the settings key and 
+Settings can be changed using the `set` method. It takes the settings key and
 the new value.
 
 Mass updates can be done with the `update` method. This method takes a
@@ -26,8 +26,8 @@ Fontana.Settings = (function ($) {
 	var Settings, defaults;
 
 	defaults = {
-		'data_refresh_interval': 15 * 1000 /* ms */,
-		'message_animate_interval': 6 * 1000 /* ms */,
+		'data_refresh_interval': 45 * 1000, /* ms */
+		'message_animate_interval': 5.5 * 1000, /* ms */
 		'message_template': '<div class="fontanta-message">\
 							   <q>{{html text}}</q>\
 							   <figure><img src="${profile_image_url}" width="64" height="64"></figure>\
@@ -39,26 +39,26 @@ Fontana.Settings = (function ($) {
 
 	Settings = function () {
 		this.settings = defaults;
-	}
+	};
 
 	Settings.prototype.get = function (key) {
 		return this.settings[key];
-	}
+	};
 
 	Settings.prototype.set = function (key, value) {
 		var old = this.get(key);
 		this.settings[key] = value;
 		this.trigger('change', key, old, value);
-	}
+	};
 
 	Settings.prototype.update = function (settings) {
 		var self = this;
 		$.each(settings, function (key, value) {
 			self.set(key, value);
 		});
-	}
+	};
 
-	MicroEvent.mixin(Settings);
+	window.MicroEvent.mixin(Settings);
 
 	return Settings;
 }(window.jQuery));

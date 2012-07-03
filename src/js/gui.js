@@ -7,7 +7,7 @@ The constructor takes a datasource instance and a settings instance.
 
 == Display methods ==
 
-There are 3 methods to control the visualisation: 
+There are 3 methods to control the visualisation:
 
  * start
  * pause
@@ -37,8 +37,8 @@ Fontana.GUI = (function ($) {
 		this.dataRefreshTimer = -1;
 		this.animateTimer = -1;
 		this.current = null;
-		this.effect = Fontana.effects[this.settings.get('effect')]
-	}
+		this.effect = null;
+	};
 
 	/* data retrieval methods */
 
@@ -46,21 +46,20 @@ Fontana.GUI = (function ($) {
 		var self = this;
 		this.datasource.getMessages(function (messages) {
 			self.handleMessages.call(self, messages);
-			self.dataRefreshTimer = window.setTimeout(function () {
-				self.getMessages.call(self)
-			}, self.settings.get('data_refresh_interval'));
 		});
-	}
+	};
 
 	GUI.prototype.handleMessages = function (messages) {
 		var self = this;
+		this.pause();
 		if (this.current) {
-			this.current.prev('.fontanta-message').remove();
+			this.current.prevAll('.fontanta-message').remove();
 		}
 		$.each(messages, function (i, message) {
-			self.container.append(self.formatMessage(message))
+			self.container.append(self.formatMessage(message));
 		});
-	}
+		this.resume();
+	};
 
 	/* display methods */
 
@@ -68,57 +67,61 @@ Fontana.GUI = (function ($) {
 		var html;
 		html = $.tmpl(this.settings.get('message_template'), message);
 		return html;
-	}	
+	};
 
 	GUI.prototype.animateMessages = function () {
-		var self = this, next;
-		if (!this.current) {
-			this.effect.setup(this.container, '.fontanta-message');
-			next = this.container.find('.fontanta-message:first');
+		var self = this, next, effectName;
+		if (!this.effect) {
+			effectName = this.settings.get('effect');
+			this.effect = new Fontana.effects[effectName](this.container,
+													  '.fontanta-message');
+		}
+		if (!this.current || !this.current.next().length) {
+			next = $('.fontanta-message:first', this.container);
 		} else {
 			next = this.current.next();
-			if (!next.length) {
-				next = this.container.find('.fontanta-message:first');
-			}
 		}
 		this.effect.next(next);
 		this.current = next;
 
 		this.animateTimer = window.setTimeout(function () {
-			self.animateMessages.call(self)
+			self.animateMessages.call(self);
 		}, this.settings.get('message_animate_interval'));
-	}
+	};
 
 	/* public control methods */
 
 	GUI.prototype.start = function (node) {
-		var self = this;
 		this.container = node;
-		this.pause();
 		this.clear();
-		this.resume();
-	}
+		this.getMessages();
+	};
 
 	GUI.prototype.pause = function () {
 		window.clearTimeout(this.dataRefreshTimer);
 		window.clearTimeout(this.animateTimer);
-	}
+	};
 
 	GUI.prototype.resume = function () {
-		this.getMessages();
+		var self = this;
+		this.dataRefreshTimer = window.setTimeout(function () {
+			self.getMessages.call(self);
+		}, this.settings.get('data_refresh_interval'));
 		this.animateMessages();
-	}
+	};
 
 	GUI.prototype.reset = function () {
 		this.current = null;
 		this.container.empty();
-		this.effect.destroy();
-	}
+		if (this.effect) {
+			this.effect.destroy();
+		}
+	};
 
 	GUI.prototype.clear = function () {
 		this.pause();
 		this.reset();
-	}
+	};
 
 	return GUI;
 }(window.jQuery));

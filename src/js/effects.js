@@ -1,120 +1,88 @@
 var Fontana = window.Fontana || {};
 
-Fontana.effects = (function () {
-    var Basic, Fade, Slide, Zoom;
-
+Fontana.effects = (function ($) {
+    var Base, Fade, Slide, Zoom;
 
     /**
-     * basic effect class
+     * Base effect class
      * @param   jQuery  container
      * @param   string  selector
-     * @param   int     duration
-     * @param   object  before_show_prop
-     * @param   object  show_prop
-     * @param   object  hide_prop
      */
-    Basic = function(container, selector, duration, before_show_prop, show_prop, hide_prop) {
-        var prev_element;
-
-        function next( element ) {
-            positionVerticalMiddle(element);
-
-            if(prev_element) {
-                prev_element.animate(hide_prop, duration, function() {
-                    element.animate(before_show_prop, 0)
-                        .animate(show_prop, duration);
-                });
-            } else {
-                element.animate(before_show_prop, 0)
-                    .animate(show_prop, duration);
-            }
-
-            prev_element = element;
-        }
-
-        function positionVerticalMiddle(element) {
-            element.css({ top: (container.height() - element.height()) / 2 });
-        }
-
-        function destroy() {
-            $(selector, container).stop()
-                .removeAttr("style")
-                .hide();
-        }
-
-        return {
-            next: next,
-            destroy: destroy
-        }
+    Base = function (container, selector) {
+        this.container = container;
+        this.selector = selector;
+        this.duration = 0;
+        this.before_show_prop = {};
+        this.show_prop = {};
+        this.hide_prop = {};
+        this.prev_element = null;
     };
 
+    Base.prototype.positionVerticalMiddle = function (element) {
+        element.css({ top: (this.container.height() - element.height()) / 2 });
+    };
+
+    Base.prototype.next = function (element) {
+        var self = this;
+        this.positionVerticalMiddle(element);
+        if (this.prev_element) {
+            this.prev_element.animate(this.hide_prop, this.duration,
+                function () {
+                    element.animate(self.before_show_prop, 0)
+                        .animate(self.show_prop, self.duration);
+                });
+        } else {
+            element.animate(this.before_show_prop, 0)
+                .animate(this.show_prop, this.duration);
+        }
+        this.prev_element = element;
+    };
+
+    Base.prototype.destroy = function () {
+        $(this.selector, this.container).stop().removeAttr('style').hide();
+    };
 
     /**
      * fade effect
      */
-    Fade = (function() {
-        var effect;
-        function setup(container, selector) {
-            effect = new Basic(container, selector, 500,
-                { },
-                { opacity: 'show' },
-                { opacity: 'hide' });
-        }
-
-        return {
-            name: 'fade',
-            setup: setup,
-            next: function(el){ if (effect) effect.next(el); },
-            destroy: function(){ if (effect) effect.destroy(); }
-        }
-    })();
+    Fade = function (container, selector) {
+        Base.call(this, container, selector);
+        this.duration = 500;
+        this.show_prop = {opacity: 'show'};
+        this.hide_prop = {opacity: 'hide'};
+    };
+    $.extend(Fade.prototype, Base.prototype);
 
 
     /**
      * slide effect
      */
-    Slide = (function() {
-        var effect;
-        function setup(container, selector) {
-            effect = new Basic(container, selector, 500,
-                { left: -100 },
-                { opacity: 'show', left: 0 },
-                { opacity: 'hide', left: 100 });
-        }
-
-        return {
-            name: 'slide',
-            setup: setup,
-            next: function(el){ if (effect) effect.next(el); },
-            destroy: function(){ if (effect) effect.destroy(); }
-        }
-    })();
+    Slide = function (container, selector) {
+        Base.call(this, container, selector);
+        this.duration = 500;
+        this.before_show_prop = {left: -100};
+        this.show_prop = {opacity: 'show', left: 0};
+        this.hide_prop = {opacity: 'hide', left: 100};
+    };
+    $.extend(Slide.prototype, Base.prototype);
 
 
     /**
      * zoom effect
      */
-    Zoom = (function() {
-        var effect;
-        function setup(container, selector) {
-            effect = new Basic(container, selector, 500,
-                { scale: .5 },
-                { opacity: 'show', scale: 1 },
-                { opacity: 'hide', scale: 5 });
-        }
-
-        return {
-            name: 'zoom',
-            setup: setup,
-            next: function(el){ if (effect) effect.next(el); },
-            destroy: function(){ if (effect) effect.destroy(); }
-        }
-    })();
+    Zoom = function (container, selector) {
+        Base.call(this, container, selector);
+        this.duration = 500;
+        this.before_show_prop = {scale: 0.5};
+        this.show_prop = {opacity: 'show', scale: 1};
+        this.hide_prop = {opacity: 'hide', scale: 5};
+    };
+    $.extend(Zoom.prototype, Base.prototype);
 
     return {
-        'Basic': Basic,
+        'Base': Base,
         'Fade': Fade,
         'Slide': Slide,
         'Zoom': Zoom
-    }
-}());
+    };
+}(window.jQuery));
