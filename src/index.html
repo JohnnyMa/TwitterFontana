@@ -5,10 +5,6 @@
     <script src="js/lib/modernizr.min.js"></script>
     <link href="css/all.css" rel="stylesheet">
     <link href="js/lib/farbtastic/farbtastic.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Cherry+Cream+Soda" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Slackey" rel="stylesheet">
 </head>
 <body>
 
@@ -55,11 +51,11 @@
                     <div class="field">
                         <select name="font_face" id="font_face">
                             <option value="Open Sans, sans-serif">Open Sans</option>
-                            <option value="Helvetica, sans-serif">Helvetica</option>
-                            <option value="Slackey, cursive">Slackey</option>
-                            <option value="Merriweather, serif">Merriweather</option>
-                            <option value="Cherry Cream Soda, sans-serif">Cherry Cream Soda</option>
-                            <option value="Comic Sans MS, sans-serif">Comic Sans</option>
+                            <option value="Exo, sans-serif">Exo</option>
+                            <option value="Imprima, sans-serif">Imprima</option>
+                            <option value="Handlee, cursive">Handlee</option>
+                            <option value="Crete Round, serif">Crete Round</option>
+                            <option value="Enriqueta, serif">Enriqueta</option>
                         </select>
                     </div>
                     <label>Message font color</label>
@@ -107,5 +103,21 @@
     <script src="js/settings.js"></script>
     <script src="js/wall.js"></script>
     <script src="js/all.js"></script>
+    <script>
+    WebFontConfig = {
+        google: { families: ['Open Sans', 'Crete Round', 'Enriqueta::latin,latin-ext',
+                             'Exo::latin,latin-ext', 'Handlee',
+                             'Imprima::latin,latin-ext'] }
+    };
+    (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+                 '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })();
+    </script>
 </body>
 </html>
