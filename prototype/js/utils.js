@@ -1,9 +1,5 @@
-var Fontana = window.Fontana || {};
-
-Fontana.utils = (function () {
-    var prettyDate, requestFullscreen, exitFullscreen, vendors;
-
-    prettyDate = function (time) {
+var utils = (function () {
+    var prettyDate = function (time) {
         var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ")),
             diff = (((new Date()).getTime() - date.getTime()) / 1000),
             day_diff = Math.floor(diff / 86400);
@@ -22,9 +18,9 @@ Fontana.utils = (function () {
             day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
     }
 
-    vendors = ["webkit", "moz", "o", "ms"];
+    var vendors = ["webkit", "moz", "o", "ms"];
 
-    requestFullscreen = function (el) {
+    var requestFullscreen = function (el) {
         var request = el.requestFullscreen;
         $.each(vendors, function (i, vendor) {
             if (request) return false;
@@ -41,8 +37,8 @@ Fontana.utils = (function () {
         }
     }
 
-    exitFullscreen = function () {
-        var request = document.exitFullscreen;
+    var exitFullscreen = function () {
+        var equest = document.exitFullscreen;
         for (vendor in vendors) {
             if (request) break;
             request = el[vendor + "CancelFullScreen"];
@@ -52,9 +48,15 @@ Fontana.utils = (function () {
         }
     }
 
+    var isFullscreen = function () {
+        var state = null;
+        document.exitFullscreen;
+    }
+
     return {
         'prettyDate': prettyDate,
         'requestFullscreen': requestFullscreen,
-        'exitFullscreen': exitFullscreen
+        'exitFullscreen': exitFullscreen,
+        'isFullscreen': isFullscreen
     }
 }());

@@ -1,112 +1,64 @@
-var settings = (function () {
-    var panel = $("#settings");
-    var fields = $("input:text:not([name=settings_url]), select", panel);
+/**
+= Settings =
 
-    /**
-     * Load settings from the url
-     */
-    var loadSettingsFromUrl = function () {
-        var settings = {};
-        var vars = window.location.search.substring(1).split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            settings[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+The settings container for Fontana.
 
-        }
-        fields.each(function (i, f) {
-            f.value = settings[f.name];
-        });
-    }
+After construction it will contain the default settings for Fontana.
 
-    /**
-     * Generate the url for the current settings
-     */
-    var generateSettingsUrl = function () {
-        var url = location.protocol+"//"+ location.host + location.pathname;
-        var query = []
-        fields.each(function (i, f) {
-            query.push(encodeURIComponent(f.name) + '=' + encodeURIComponent(f.value));
-        });
-        var query = fields.serialize();
-        return url +"?"+ query;
-    }
+Settings can be retrieved using the `get` instance method. It takes the
+settings key as an argument.
 
-    /**
-     * Collect the current settings from the form fields
-     */
-    var getCurrentSettings = function () {
-        var settings = {};
-        fields.each(function (i, f) {
-            settings[f.name] = f.value;
-        });
-        return settings;
-    }
+Settings can be changed using the `set` method. It takes the settings key and 
+the new value.
 
-    /**
-     * Settings panel display methods
-     */
-    var showSettings = function () {
-        panel.slideDown();
-    }
+Mass updates can be done with the `update` method. This method takes a
+object of key value pairs.
 
-    var hideSettings = function () {
-        panel.slideUp();
-    }
+The settings can be observed by binding functions to listen to the
+`change` event. On each setting change the observers will be notified about
+which key has changed, the previous value and the new value.
+*/
 
-    var toggleSettings = function () {
-        if (panel.is(':visible')) {
-            hideSettings();
-        } else {
-            showSettings();
-        }
-    }
+var Fontana = window.Fontana || {};
 
-    // when no location search is given (so no settings)
-    // we show the editor
-    if(location.search == '') {
-        panel.show();
-    }
-    else {
-        loadSettingsFromUrl();
-    }
 
-    // initialize the color pickers
-    $('.color', panel).each(function () {
-        var input = $(this);
-        var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
-        var swatch = $('<div class="swatch"></div>').insertAfter($(this));
-        var picker = $.farbtastic(pickerElement);
+Fontana.Settings = (function ($) {
+	var Settings, defaults;
 
-        pickerElement.hide();
-        swatch.click(function () { input.focus() });
-        swatch.css('background-color', input.val());
-        picker.setColor(input.val());
+	defaults = {
+		'data_refresh_interval': 15 * 1000 /* ms */,
+		'message_animate_interval': 6 * 1000 /* ms */,
+		'message_template': '<div class="fontanta-message">\
+							   <q>{{html text}}</q>\
+							   <figure><img src="${profile_image_url}" width="64" height="64"></figure>\
+                               <cite>@${from_user}</cite>\
+                               <time>${Fontana.utils.prettyDate(created_at)}</time>\
+                             </div>',
+        'effect': 'Fade'
+	};
 
-        input.focus(function () {
-            pickerElement.fadeIn('fast');
-            picker.linkTo(function (color) {
-                swatch.css('background-color', color);
-                input.val(color).change();
-            });
-        });
+	Settings = function () {
+		this.settings = defaults;
+	}
 
-        input.blur(function () {
-            pickerElement.fadeOut('fast');
-            picker.setColor(input.val());
-            swatch.css('background-color', input.val());
-        });
+	Settings.prototype.get = function (key) {
+		return this.settings[key];
+	}
 
-        input.keyup(function () {
-            picker.setColor(input.val());
-            swatch.css('background-color', input.val());
-        })
-    });
+	Settings.prototype.set = function (key, value) {
+		var old = this.get(key);
+		this.settings[key] = value;
+		this.trigger('change', key, old, value);
+	}
 
-    return {
-        'showSettings': showSettings,
-        'hideSettings': hideSettings,
-        'toggleSettings': toggleSettings,
-        'getCurrentSettings': getCurrentSettings,
-        'generateSettingsUrl': generateSettingsUrl
-    }
-}());
+	Settings.prototype.update = function (settings) {
+		var self = this;
+		$.each(settings, function (key, value) {
+			self.set(key, value);
+		});
+	}
+
+	MicroEvent.mixin(Settings);
+
+	return Settings;
+}(window.jQuery));
