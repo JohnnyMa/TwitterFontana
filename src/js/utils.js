@@ -1,62 +1,53 @@
-var utils = (function () {
-    var prettyDate = function (time) {
-        var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ")),
+var Fontana = window.Fontana || {};
+
+Fontana.utils = (function ($) {
+    var prettyDate, requestFullscreen, exitFullscreen, vendors;
+
+    prettyDate = function (time) {
+        var date = new Date(time),
             diff = (((new Date()).getTime() - date.getTime()) / 1000),
             day_diff = Math.floor(diff / 86400);
 
-        if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
-            return;
+        if (isNaN(day_diff) || day_diff < 0 || day_diff >= 31) {
+            return time;
+        }
+        if (!day_diff && diff < 60) { return 'just now'; }
+        if (!day_diff && diff < 120) { return '1 minute ago'; }
+        if (!day_diff && diff < 3600) { return Math.floor(diff / 60) + ' minutes ago'; }
+        if (!day_diff && diff < 7200) { return '1 hour ago'; }
+        if (!day_diff && diff < 86400) { return Math.floor(diff / 3600) + ' hours ago'; }
+        if (day_diff === 1) { return 'Yesterday'; }
+        if (day_diff < 7) { return day_diff + ' days ago'; }
+        if (day_diff < 31) { return Math.ceil(day_diff / 7) + ' weeks ago'; }
+    };
 
-        return day_diff == 0 && (
-            diff < 60 && "just now" ||
-                diff < 120 && "1 minute ago" ||
-                diff < 3600 && Math.floor( diff / 60 ) + " minutes ago" ||
-                diff < 7200 && "1 hour ago" ||
-                diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
-            day_diff == 1 && "Yesterday" ||
-            day_diff < 7 && day_diff + " days ago" ||
-            day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
-    }
+    vendors = ['webkit', 'moz', 'o', 'ms'];
 
-    var vendors = ["webkit", "moz", "o", "ms"];
-
-    var requestFullscreen = function (el) {
+    requestFullscreen = function (el) {
         var request = el.requestFullscreen;
         $.each(vendors, function (i, vendor) {
-            if (request) return false;
-            request = el[vendor + "RequestFullScreen"];
+            if (request) { return false; }
+            request = el[vendor + 'RequestFullScreen'];
         });
         if (request) {
             request.call(el);
         }
-        else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
-            var wscript = new ActiveXObject("WScript.Shell");
-            if (wscript !== null) {
-                wscript.SendKeys("{F11}");
-            }
-        }
-    }
+    };
 
-    var exitFullscreen = function () {
-        var equest = document.exitFullscreen;
-        for (vendor in vendors) {
-            if (request) break;
-            request = el[vendor + "CancelFullScreen"];
-        }
+    exitFullscreen = function () {
+        var request = document.exitFullscreen;
+        $.each(vendors, function (i, vendor) {
+            if (request) { return false; }
+            request = document[vendor + 'CancelFullScreen'];
+        });
         if (request) {
             request();
         }
-    }
-
-    var isFullscreen = function () {
-        var state = null;
-        document.exitFullscreen;
-    }
+    };
 
     return {
         'prettyDate': prettyDate,
         'requestFullscreen': requestFullscreen,
-        'exitFullscreen': exitFullscreen,
-        'isFullscreen': isFullscreen
-    }
-}());
+        'exitFullscreen': exitFullscreen
+    };
+}(window.jQuery));

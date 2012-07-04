@@ -1,112 +1,98 @@
-var settings = (function () {
-    var panel = $("#settings");
-    var fields = $("input:text:not([name=settings_url]), select", panel);
+/**
+= Settings =
+
+The settings container for Fontana.
+
+After construction it will contain the default settings for Fontana.
+
+Settings can be retrieved using the `get` instance method. It takes the
+settings key as an argument.
+
+Settings can be changed using the `set` method. It takes the settings key and
+the new value.
+
+Mass updates can be done with the `update` method. This method takes a
+object of key value pairs.
+
+The settings can be observed by binding functions to listen to the
+`change` event. On each setting change the observers will be notified about
+which key has changed, the previous value and the new value.
+*/
+
+var Fontana = window.Fontana || {};
+Fontana.config = Fontana.config || {};
+
+Fontana.config.Settings = (function ($) {
+    var Settings, defaults;
+
+    defaults = {
+        'data_refresh_interval': 45 * 1000, /* ms */
+        'message_animate_interval': 5.5 * 1000, /* ms */
+        'message_template': '<div class="fontana-message"> ' +
+                            '    <q>{{html html}}</q> ' +
+                            '    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
+                            '    <cite>@${from_user}</cite>' +
+                            '    <time>${Fontana.utils.prettyDate(created_at)}</time>' +
+                            '</div>',
+        'style_template': '#${container_id} {' +
+                          '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
+                          '    background-size: contain;' +
+                          '}' +
+                          '.fontana-message {' +
+                          '    background: ${box_bg};' +
+                          '    color: ${text_color};' +
+                          '    font-family: ${font_face||"sans-serif"};' +
+                          '}' +
+                          '.fontana-message a {' +
+                          '    color: ${text_color}' +
+                          '}' +
+                          '.fontana-message .hashtag, .fontana-message .username {'+
+                          '    color: ${special_color}' +
+                          '}',
+        'twitter_search': 'Twitter',
+        'effect': 'Slide',
+        'font-face': 'Open Sans, sans-serif',
+        'text_color': '#ffffff',
+        'special_color': '#aaea71',
+        'bg_color': '#76ab30',
+        'box_bg': '#80b43c'
+    };
+
+    Settings = function () {
+        this.settings = defaults;
+    };
 
     /**
-     * Load settings from the url
+     * Get a setting by its key
      */
-    var loadSettingsFromUrl = function () {
-        var settings = {};
-        var vars = window.location.search.substring(1).split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            settings[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    Settings.prototype.get = function (key) {
+        return this.settings[key];
+    };
 
+    /**
+     * Set a setting to a new value
+     */
+    Settings.prototype.set = function (key, value) {
+        var old = this.get(key);
+        this.settings[key] = value;
+        if (old !== value) {
+            this.trigger('change', key, old, value);
         }
-        fields.each(function (i, f) {
-            f.value = settings[f.name];
-        });
-    }
+    };
 
     /**
-     * Generate the url for the current settings
+     * Update multiple settings by passing in a object
+     * with key->value pairs
      */
-    var generateSettingsUrl = function () {
-        var url = location.protocol+"//"+ location.host + location.pathname;
-        var query = []
-        fields.each(function (i, f) {
-            query.push(encodeURIComponent(f.name) + '=' + encodeURIComponent(f.value));
+    Settings.prototype.update = function (settings) {
+        var self = this;
+        $.each(settings, function (key, value) {
+            self.set(key, value);
         });
-        var query = fields.serialize();
-        return url +"?"+ query;
-    }
+    };
 
-    /**
-     * Collect the current settings from the form fields
-     */
-    var getCurrentSettings = function () {
-        var settings = {};
-        fields.each(function (i, f) {
-            settings[f.name] = f.value;
-        });
-        return settings;
-    }
+    // Make it eventful
+    window.MicroEvent.mixin(Settings);
 
-    /**
-     * Settings panel display methods
-     */
-    var showSettings = function () {
-        panel.slideDown();
-    }
-
-    var hideSettings = function () {
-        panel.slideUp();
-    }
-
-    var toggleSettings = function () {
-        if (panel.is(':visible')) {
-            hideSettings();
-        } else {
-            showSettings();
-        }
-    }
-
-    // when no location search is given (so no settings)
-    // we show the editor
-    if(location.search == '') {
-        panel.show();
-    }
-    else {
-        loadSettingsFromUrl();
-    }
-
-    // initialize the color pickers
-    $('.color', panel).each(function () {
-        var input = $(this);
-        var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
-        var swatch = $('<div class="swatch"></div>').insertAfter($(this));
-        var picker = $.farbtastic(pickerElement);
-
-        pickerElement.hide();
-        swatch.click(function () { input.focus() });
-        swatch.css('background-color', input.val());
-        picker.setColor(input.val());
-
-        input.focus(function () {
-            pickerElement.fadeIn('fast');
-            picker.linkTo(function (color) {
-                swatch.css('background-color', color);
-                input.val(color).change();
-            });
-        });
-
-        input.blur(function () {
-            pickerElement.fadeOut('fast');
-            picker.setColor(input.val());
-            swatch.css('background-color', input.val());
-        });
-
-        input.keyup(function () {
-            picker.setColor(input.val());
-            swatch.css('background-color', input.val());
-        })
-    });
-
-    return {
-        'showSettings': showSettings,
-        'hideSettings': hideSettings,
-        'toggleSettings': toggleSettings,
-        'getCurrentSettings': getCurrentSettings,
-        'generateSettingsUrl': generateSettingsUrl
-    }
-}());
+    return Settings;
+}(window.jQuery));
