@@ -107,6 +107,7 @@ Fontana.GUI = (function ($) {
      */
     GUI.prototype.formatMessage = function (message) {
         var html;
+        message.text = twttr.txt.autoLink(message.text);
         html = $.tmpl(this.settings.get('message_template'), message);
         return html;
     };

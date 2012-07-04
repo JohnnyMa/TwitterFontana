@@ -42,12 +42,18 @@ Fontana.config.Settings = (function ($) {
                           '    background: ${box_bg};' +
                           '    color: ${text_color};' +
                           '    font-family: ${font_face||"sans-serif"};' +
+                          '}' +
+                          '.fontana-message a {' +
+                          '    color: ${text_color}' +
+                          '}' +
+                          '.fontana-message .hashtag, .fontana-message .username {'+
+                          '    color: ${special_color}' +
                           '}',
         'twitter_search': 'Twitter',
         'effect': 'Slide',
         'font-face': 'Open Sans, sans-serif',
         'text_color': '#ffffff',
-        'special_color': '#ffffff',
+        'special_color': '#aaea71',
         'bg_color': '#76ab30',
         'box_bg': '#80b43c'
     };
