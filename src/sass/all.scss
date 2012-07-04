@@ -6,11 +6,15 @@ body {
 }
 
 .logo {
-    background: rgba(0, 0, 0, .66) url(../img/twitter.png) no-repeat 24px 50%;
+    background: rgba(0, 0, 0, .33) url(../img/twitter.png) no-repeat 24px 50%;
     padding: 12px 0 12px 60px;
     font-weight: 600;
     color: #fff;
     text-shadow: -1px -1px 0 rgba(0, 0, 0, .1);
+    position: absolute;
+    right: 0;
+    left:0;
+    z-index: 5;
 }
 
 .tools {
@@ -78,6 +82,10 @@ body {
         text-align: left;
     }
 
+    fieldset {
+        margin: 0 12px;
+    }
+
     legend {
         display: none;
     }
@@ -95,7 +103,7 @@ body {
         border: 1px solid #fff;
         outline: none;
         @include border-radius(3px);
-        width: 20em;
+        width: 15em;
     }
     select {
         border: 0;

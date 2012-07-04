@@ -1,3 +1,7 @@
+/**
+ * A Twitter Fontana with a settings panel and fullscreen option.
+ */
+
 $(function () {
     var settings,settingsGUI, data, fontana;
 

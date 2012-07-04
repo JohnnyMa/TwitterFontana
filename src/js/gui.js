@@ -47,6 +47,9 @@ Fontana.GUI = (function ($) {
         });
     };
 
+    /**
+     * Handle settings changes
+     */
     GUI.prototype.handleSettingsChange = function (setting, old, value) {
         if (setting == 'twitter_search') {
             this.clear();
@@ -70,6 +73,9 @@ Fontana.GUI = (function ($) {
 
     /* data retrieval methods */
 
+    /**
+     * Get the messages from the datasource
+     */
     GUI.prototype.getMessages = function () {
         var self = this;
         this.datasource.getMessages(function (messages) {
@@ -79,6 +85,9 @@ Fontana.GUI = (function ($) {
         });
     };
 
+    /**
+     * Handle the messages from the datasource
+     */
     GUI.prototype.handleMessages = function (messages) {
         var self = this;
         this.pause();
@@ -93,12 +102,18 @@ Fontana.GUI = (function ($) {
 
     /* display methods */
 
+    /**
+     * Create HTML from a datasource object
+     */
     GUI.prototype.formatMessage = function (message) {
         var html;
         html = $.tmpl(this.settings.get('message_template'), message);
         return html;
     };
 
+    /**
+     * Create CSS according to the current settings
+     */
     GUI.prototype.updateStyle = function () {
         var self = this, options = {};
         $.each(this.style_settings, function (i, key) {
@@ -115,6 +130,9 @@ Fontana.GUI = (function ($) {
             .appendTo("head");
     };
 
+    /**
+     * Transition from one message to the next one
+     */
     GUI.prototype.animateMessages = function () {
         var self = this, next, effectName;
         if (!this.effect) {
@@ -136,6 +154,9 @@ Fontana.GUI = (function ($) {
 
     /* public control methods */
 
+    /**
+     * Start the fountain in the given container
+     */
     GUI.prototype.start = function (node) {
         this.container = node;
         this.updateStyle();
@@ -143,11 +164,17 @@ Fontana.GUI = (function ($) {
         this.getMessages();
     };
 
+    /**
+     * Stop all running timers
+     */
     GUI.prototype.pause = function () {
         window.clearTimeout(this.dataRefreshTimer);
         window.clearTimeout(this.animateTimer);
     };
 
+    /**
+     * Restart all timers
+     */
     GUI.prototype.resume = function () {
         var self = this;
         this.dataRefreshTimer = window.setTimeout(function () {
@@ -156,11 +183,17 @@ Fontana.GUI = (function ($) {
         this.animateMessages();
     };
 
+    /**
+     * Reset the messages
+     */
     GUI.prototype.reset = function () {
         this.current = null;
         this.container.empty();
     };
 
+    /**
+     * Reset the messages and stop all timers
+     */
     GUI.prototype.clear = function () {
         this.pause();
         this.reset();
