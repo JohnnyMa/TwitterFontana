@@ -23,18 +23,18 @@ var Fontana = window.Fontana || {};
 Fontana.config = {};
 
 Fontana.config.Settings = (function ($) {
-	var Settings, defaults;
+    var Settings, defaults;
 
-	defaults = {
-		'data_refresh_interval': 45 * 1000, /* ms */
-		'message_animate_interval': 5.5 * 1000, /* ms */
-		'message_template': '<div class="fontana-message"> ' +
-							'    <q>{{html text}}</q> ' +
-							'    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
-							'    <cite>@${from_user}</cite>' +
-							'    <time>${Fontana.utils.prettyDate(created_at)}</time>' +
-							'</div>',
-		'style_template': '#${container_id} {' +
+    defaults = {
+        'data_refresh_interval': 45 * 1000, /* ms */
+        'message_animate_interval': 5.5 * 1000, /* ms */
+        'message_template': '<div class="fontana-message"> ' +
+                            '    <q>{{html text}}</q> ' +
+                            '    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
+                            '    <cite>@${from_user}</cite>' +
+                            '    <time>${Fontana.utils.prettyDate(created_at)}</time>' +
+                            '</div>',
+        'style_template': '#${container_id} {' +
                           '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
                           '    background-size: contain;' +
                           '}' +
@@ -45,34 +45,45 @@ Fontana.config.Settings = (function ($) {
                           '}',
         'effect': 'Slide',
         'twitter_search': 'Twitter'
-	};
+    };
 
-	Settings = function () {
-		this.settings = defaults;
-	};
+    Settings = function () {
+        this.settings = defaults;
+    };
 
-	Settings.prototype.get = function (key) {
-		return this.settings[key];
-	};
+    /**
+     * Get a setting by its key
+     */
+    Settings.prototype.get = function (key) {
+        return this.settings[key];
+    };
 
-	Settings.prototype.set = function (key, value) {
-		var old = this.get(key);
-		this.settings[key] = value;
-		if (old !== value) {
-			this.trigger('change', key, old, value);
-		}
-	};
+    /**
+     * Set a setting to a new value
+     */
+    Settings.prototype.set = function (key, value) {
+        var old = this.get(key);
+        this.settings[key] = value;
+        if (old !== value) {
+            this.trigger('change', key, old, value);
+        }
+    };
 
-	Settings.prototype.update = function (settings) {
-		var self = this;
-		$.each(settings, function (key, value) {
-			self.set(key, value);
-		});
-	};
+    /**
+     * Update multiple settings by passing in a object
+     * with key->value pairs
+     */
+    Settings.prototype.update = function (settings) {
+        var self = this;
+        $.each(settings, function (key, value) {
+            self.set(key, value);
+        });
+    };
 
-	window.MicroEvent.mixin(Settings);
+    // Make it eventful
+    window.MicroEvent.mixin(Settings);
 
-	return Settings;
+    return Settings;
 }(window.jQuery));
 
 /**
@@ -82,71 +93,122 @@ The user interface for (a number of) settings.
 */
 
 Fontana.config.SettingsGUI = (function ($) {
-	var SettingsGUI;
+    var SettingsGUI;
 
-	SettingsGUI = function (container, settings) {
-		var self = this;
-		this.container = container;
-		this.settings = settings;
-	};
+    SettingsGUI = function (container, settings) {
+        var self = this;
+        this.container = container;
+        this.settings = settings;
+        this.fields = [ 'twitter_search', 'effect',
+                        'font_face', 'text_color',
+                        'special_color', 'bg_color',
+                        'bg_image', 'box_bg'];
+    };
 
-	SettingsGUI.prototype.handleFormChange = function (el) {
-		this.settings.set(el.name, $(el).val());
-	};
+    /**
+     * Load settings from the url
+     */
+    SettingsGUI.prototype.loadSettingsFromUrl = function () {
+        var settings = {}, params, i, pair, key, value;
+        params = window.location.search.substring(1).split('&');
+        for (i = 0; i < params.length; i++) {
+            pair = params[i].split('=');
+            key = decodeURIComponent(pair[0]);
+            value = decodeURIComponent(pair[1]);
+            if ($.inArray(key, this.fields) > -1) {
+                this.settings.set(key, value);
+            }
+        }
+    };
 
-	SettingsGUI.prototype.draw = function () {
-		var self = this;
-		this.container.empty();
-		$.get('partials/settings.html', function (html) {
-			self.container.html(html);
-			// Listen for change events on the inputs
-			$(':input', self.container).change(function () {
-				self.handleFormChange.call(self, this);
-			});
-			// Listen to submit events on the forms
-			$('form', self.container).submit(function (e) {
-				e.preventDefault();
-				$(':input', this).each(function () {
-					self.handleFormChange.call(self, this);
-				});
-			});
-			// Initialize the color pickers
-			$('.color', self.container).each(function () {
-				var input = $(this);
-				var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
-				var swatch = $('<div class="swatch"></div>').insertAfter($(this));
-				var picker = $.farbtastic(pickerElement);
+    /**
+     * Generate the url for the current settings
+     */
+    SettingsGUI.prototype.generateSettingsUrl = function () {
+        var url,query;
+        url = location.protocol + '//' + location.host + location.pathname;
+        query = [];
+        $.each(this.fields, function (i, key) {
+            var value = $('#' + key).val();
+            if (value) {
+                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            }
+        });
+        return url + '?' + query.join('&');
+    };
 
-				pickerElement.hide();
-				swatch.click(function () { input.focus(); });
-				swatch.css('background-color', input.val());
-				picker.setColor(input.val());
+    /**
+     * Handle a value change in a settings form by updating
+     * the settings object and updating the settings url field.
+     */
+    SettingsGUI.prototype.handleFormChange = function (el) {
+        this.settings.set(el.name, $(el).val());
+        $('#settings_url').val(this.generateSettingsUrl());
+    };
 
-				input.focus(function () {
-					pickerElement.fadeIn('fast');
-					picker.linkTo(function (color) {
-						swatch.css('background-color', color);
-						input.val(color).change();
-					});
-				});
+    /**
+     * Load and initialize the settings panel
+     */
+    SettingsGUI.prototype.draw = function () {
+        var self = this;
+        this.container.empty();
+        $.get('partials/settings.html', function (html) {
+            self.container.html(html);
+            // Listen for change events on the inputs
+            $(':input', self.container).change(function () {
+                self.handleFormChange.call(self, this);
+            });
+            // Listen to submit events on the forms
+            $('form', self.container).submit(function (e) {
+                e.preventDefault();
+                $(':input', this).each(function () {
+                    self.handleFormChange.call(self, this);
+                });
+            });
+            // Select the settings url on click
+            $('#settings_url').bind('click', function () {
+                $(this).select();
+            });
+            // Initialize the color pickers
+            $('.color', self.container).each(function () {
+                var input = $(this);
+                var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
+                var swatch = $('<div class="swatch"></div>').insertAfter($(this));
+                var picker = $.farbtastic(pickerElement);
 
-				input.blur(function () {
-					pickerElement.fadeOut('fast');
-					picker.setColor(input.val());
-					swatch.css('background-color', input.val());
-				});
+                pickerElement.hide();
+                swatch.click(function () { input.focus(); });
+                swatch.css('background-color', input.val());
+                picker.setColor(input.val());
 
-				input.keyup(function () {
-					picker.setColor(input.val());
-					swatch.css('background-color', input.val());
-				});
-			});
-		});
-	};
+                input.focus(function () {
+                    pickerElement.fadeIn('fast');
+                    picker.linkTo(function (color) {
+                        swatch.css('background-color', color);
+                        input.val(color).change();
+                    });
+                });
 
-	SettingsGUI.prototype.toggle = function () {
-		$('#settings').slideToggle('fast');
-	};
+                input.blur(function () {
+                    pickerElement.fadeOut('fast');
+                    picker.setColor(input.val());
+                    swatch.css('background-color', input.val());
+                });
 
-	return SettingsGUI
+                input.keyup(function () {
+                    picker.setColor(input.val());
+                    swatch.css('background-color', input.val());
+                });
+            });
+        });
+    };
+
+    /**
+     * Show/Hide the settings panel.
+     */
+    SettingsGUI.prototype.toggle = function () {
+        $('#settings').slideToggle('fast');
+    };
+
+    return SettingsGUI;
 }(window.jQuery));

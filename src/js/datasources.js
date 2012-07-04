@@ -32,44 +32,44 @@ var Fontana = window.Fontana || {};
 
 
 Fontana.datasources = (function ($) {
-	var Static, Twitter;
+    var Static, Twitter;
 
-	/**
-	 * Static datasource.
-	 *
-	 * Constructor takes an array of message objects.
-	 */
-	Static = function (data) {
-		this.data = data;
-	};
+    /**
+     * Static datasource.
+     *
+     * Constructor takes an array of message objects.
+     */
+    Static = function (data) {
+        this.data = data;
+    };
 
-	Static.prototype.getMessages = function (callback) {
-		callback(this.data);
-	};
+    Static.prototype.getMessages = function (callback) {
+        callback(this.data);
+    };
 
 
-	/**
-	 * Twitter datasource
-	 *
-	 * Constructor takes a query for Twitter's search API.
-	 */
-	Twitter = function (q) {
-		this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
-		this.q = q;
-		this.data = [];
-	};
+    /**
+     * Twitter datasource
+     *
+     * Constructor takes a query for Twitter's search API.
+     */
+    Twitter = function (q) {
+        this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
+        this.q = q;
+        this.data = [];
+    };
 
-	Twitter.prototype.getMessages = function (callback) {
-		$.getJSON(this.search_url, {q: this.q}, function (data, status) {
+    Twitter.prototype.getMessages = function (callback) {
+        $.getJSON(this.search_url, {q: this.q}, function (data, status) {
             if (status === 'success') {
                 callback(data.results);
             }
         });
-	};
+    };
 
-	return {
-		'Static': Static,
-		'Twitter': Twitter
-	};
+    return {
+        'Static': Static,
+        'Twitter': Twitter
+    };
 
 }(window.jQuery));

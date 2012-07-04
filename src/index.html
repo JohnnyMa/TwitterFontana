@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-	<title>Fontana</title>
-	<link rel="stylesheet" href="css/all.css">
+    <title>Fontana</title>
+    <link rel="stylesheet" href="css/all.css">
 </head>
 <body>
 
@@ -23,46 +23,46 @@
 <script src="js/gui.js"></script>
 <script>
 $(function () {
-	var staticData, staticFontana;
+    var staticData, staticFontana;
 
-	staticData = new Fontana.datasources.Static([{
-	    "created_at": "Tue, 03 Jul 2012 14:14:20 +0000",
-	    "from_user": "twitterfontana",
-	    "from_user_name": "Twitter Fontana",
-	    "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-	    "text": "This is not a real Tweet, but it looks just like one!",
-	},
-	{
-	    "created_at": "Tue, 03 Jul 2012 14:15:10 +0000",
-	    "from_user": "twitterfontana",
-	    "from_user_name": "Twitter Fontana",
-	    "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-	    "text": "You see, having real time Tweets show up is cool, but we also like to show static text...",
-	},
-	{
-	    "created_at": "Tue, 03 Jul 2012 14:15:50 +0000",
-	    "from_user": "twitterfontana",
-	    "from_user_name": "Twitter Fontana",
-	    "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-	    "text": "This way we can tell a story while demoing the Fountain functionality!",
-	},
-	{
-	    "created_at": "Tue, 03 Jul 2012 14:16:15 +0000",
-	    "from_user": "twitterfontana",
-	    "from_user_name": "Twitter Fontana",
-	    "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-	    "text": "One more fake Tweet, and then we'll start over.",
-	}]);
-	staticFontana = new Fontana.GUI(staticData, new Fontana.config.Settings());
-	staticFontana.start($('#static-fontana'));
+    staticData = new Fontana.datasources.Static([{
+        "created_at": "Tue, 03 Jul 2012 14:14:20 +0000",
+        "from_user": "twitterfontana",
+        "from_user_name": "Twitter Fontana",
+        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
+        "text": "This is not a real Tweet, but it looks just like one!",
+    },
+    {
+        "created_at": "Tue, 03 Jul 2012 14:15:10 +0000",
+        "from_user": "twitterfontana",
+        "from_user_name": "Twitter Fontana",
+        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
+        "text": "You see, having real time Tweets show up is cool, but we also like to show static text...",
+    },
+    {
+        "created_at": "Tue, 03 Jul 2012 14:15:50 +0000",
+        "from_user": "twitterfontana",
+        "from_user_name": "Twitter Fontana",
+        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
+        "text": "This way we can tell a story while demoing the Fountain functionality!",
+    },
+    {
+        "created_at": "Tue, 03 Jul 2012 14:16:15 +0000",
+        "from_user": "twitterfontana",
+        "from_user_name": "Twitter Fontana",
+        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
+        "text": "One more fake Tweet, and then we'll start over.",
+    }]);
+    staticFontana = new Fontana.GUI(staticData, new Fontana.config.Settings());
+    staticFontana.start($('#static-fontana'));
 });
 
 $(function () {
-	var twitterData, twitterFontana;
+    var twitterData, twitterFontana;
 
-	twitterData = new Fontana.datasources.Twitter('Twitter');
-	twitterFontana = new Fontana.GUI(twitterData, new Fontana.config.Settings());
-	twitterFontana.start($('#twitter-fontana'));
+    twitterData = new Fontana.datasources.Twitter('Twitter');
+    twitterFontana = new Fontana.GUI(twitterData, new Fontana.config.Settings());
+    twitterFontana.start($('#twitter-fontana'));
 });
 
 WebFontConfig = {
