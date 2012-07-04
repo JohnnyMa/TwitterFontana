@@ -32,7 +32,7 @@ var Fontana = window.Fontana || {};
 
 
 Fontana.datasources = (function ($) {
-    var Static, Twitter;
+    var Static, Twitter, HTML;
 
     /**
      * Static datasource.
@@ -56,7 +56,6 @@ Fontana.datasources = (function ($) {
     Twitter = function (q) {
         this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
         this.q = q;
-        this.data = [];
     };
 
     Twitter.prototype.getMessages = function (callback) {
@@ -67,9 +66,39 @@ Fontana.datasources = (function ($) {
         });
     };
 
+
+    /**
+     * HTML datasource
+     *
+     * Constructor takes a html node with "Tweets".
+     */
+     HTML = function (node) {
+        this.node = node;
+        this.data = [];
+        this.parseMessages();
+
+     };
+
+     HTML.prototype.parseMessages = function () {
+        var self = this;
+        $('.fontana-message', this.node).each(function () {
+            self.data.push({
+                'created_at': new Date().toString(),
+                'text': $(this).find('q').text(),
+                'from_user': $(this).find('cite').text(),
+                'profile_image_url': 'http://api.twitter.com/1/users/profile_image/' + $(this).find('cite').text()
+            });
+        });
+     };
+
+     HTML.prototype.getMessages = function (callback) {
+        callback(this.data);
+     };
+
     return {
         'Static': Static,
-        'Twitter': Twitter
+        'Twitter': Twitter,
+        'HTML': HTML
     };
 
 }(window.jQuery));

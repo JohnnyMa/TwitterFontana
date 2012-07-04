@@ -29,7 +29,7 @@ Fontana.config.Settings = (function ($) {
         'data_refresh_interval': 45 * 1000, /* ms */
         'message_animate_interval': 5.5 * 1000, /* ms */
         'message_template': '<div class="fontana-message"> ' +
-                            '    <q>{{html text}}</q> ' +
+                            '    <q>{{html html}}</q> ' +
                             '    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
                             '    <cite>@${from_user}</cite>' +
                             '    <time>${Fontana.utils.prettyDate(created_at)}</time>' +

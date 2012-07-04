@@ -6,11 +6,36 @@
 </head>
 <body>
 
-<h1>Static Fontana</h1>
-<div id="static-fontana"></div>
+<header>
+    <h1 class="logo">Twitter Fontana</h1>
+    <ul class="tools">
+        <li><a href="#" class="fullscreen" title="Fullscreen"><span>Fullscreen</span></a></li>
+    </ul>
+</header>
 
-<h1>Twitter Fontana</h1>
-<div id="twitter-fontana"></div>
+<div id="twitter-fontana">
+    <div class="fontana-message">
+        <q>Beautiful fullscreen real time display of Tweets: #TwitterFontana</q>
+        <cite>danielspronk</cite>
+    </div>
+    <div class="fontana-message">
+        <q>#TwitterFontana is open source (on #github), flexible and built using modern web technology. #js, #html5 & #css3 / #webfonts</q>
+        <cite>jaap3</cite>
+    </div>
+</div>
+
+<section id="settings">
+    <h1>Start your own Fontana</h1>
+    <form action="fountain.html">
+        <div class="field">
+            <input type="text" name="twitter_search" id="twitter_search" value="" placeholder="Twitter search (Like #hashtag)">
+        </div>
+
+        <div class="field">
+            <input type="submit" value="Try it!">
+        </div>
+    </form>
+</section>
 
 <script src="js/lib/jquery-1.7.2.min.js"></script>
 <script src="js/lib/jquery.tmpl-1.0.0pre.min.js"></script>
@@ -22,61 +47,6 @@
 <script src="js/datasources.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/gui.js"></script>
-<script>
-$(function () {
-    var staticData, staticFontana;
-
-    staticData = new Fontana.datasources.Static([{
-        "created_at": "Tue, 03 Jul 2012 14:14:20 +0000",
-        "from_user": "twitterfontana",
-        "from_user_name": "Twitter Fontana",
-        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-        "text": "This is not a real Tweet, but it looks just like one!",
-    },
-    {
-        "created_at": "Tue, 03 Jul 2012 14:15:10 +0000",
-        "from_user": "twitterfontana",
-        "from_user_name": "Twitter Fontana",
-        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-        "text": "You see, having real time Tweets show up is cool, but we also like to show static text...",
-    },
-    {
-        "created_at": "Tue, 03 Jul 2012 14:15:50 +0000",
-        "from_user": "twitterfontana",
-        "from_user_name": "Twitter Fontana",
-        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-        "text": "This way we can tell a story while demoing the Fountain functionality!",
-    },
-    {
-        "created_at": "Tue, 03 Jul 2012 14:16:15 +0000",
-        "from_user": "twitterfontana",
-        "from_user_name": "Twitter Fontana",
-        "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
-        "text": "One more fake Tweet, and then we'll start over.",
-    }]);
-    staticFontana = new Fontana.GUI(staticData, new Fontana.config.Settings());
-    staticFontana.start($('#static-fontana'));
-});
-
-$(function () {
-    var twitterData, twitterFontana;
-
-    twitterData = new Fontana.datasources.Twitter('Twitter');
-    twitterFontana = new Fontana.GUI(twitterData, new Fontana.config.Settings());
-    twitterFontana.start($('#twitter-fontana'));
-});
-
-WebFontConfig = {
-    google: { families: ['Open+Sans:400,600:latin,latin-ext'] }
-};
-(function() {
-    var wf = document.createElement('script');
-    wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-}());
-</script>
+<script src="js/demo.js"></script>
 </body>
 </html>
