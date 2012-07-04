@@ -53,7 +53,7 @@ Fontana.GUI = (function ($) {
 		var self = this;
 		this.pause();
 		if (this.current) {
-			this.current.prevAll('.fontanta-message').remove();
+			this.current.prevAll('.fontana-message').remove();
 		}
 		$.each(messages, function (i, message) {
 			self.container.append(self.formatMessage(message));
@@ -74,10 +74,10 @@ Fontana.GUI = (function ($) {
 		if (!this.effect) {
 			effectName = this.settings.get('effect');
 			this.effect = new Fontana.effects[effectName](this.container,
-													  '.fontanta-message');
+													  '.fontana-message');
 		}
 		if (!this.current || !this.current.next().length) {
-			next = $('.fontanta-message:first', this.container);
+			next = $('.fontana-message:first', this.container);
 		} else {
 			next = this.current.next();
 		}

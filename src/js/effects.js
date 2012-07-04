@@ -19,7 +19,8 @@ Fontana.effects = (function ($) {
     };
 
     Base.prototype.positionVerticalMiddle = function (element) {
-        element.css({ top: (this.container.height() - element.height()) / 2 });
+        var baseHeight = this.container.height() - (this.container.height() % 12) - 24;
+        element.css({ top: Math.floor((baseHeight - element.height()) / 2) });
     };
 
     Base.prototype.next = function (element) {
