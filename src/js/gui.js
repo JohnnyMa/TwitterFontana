@@ -39,6 +39,9 @@ Fontana.GUI = (function ($) {
 		this.animateTimer = -1;
 		this.current = null;
 		this.effect = null;
+		this.style_settings = [ 'font_face', 'text_color',
+								'special_color', 'bg_color',
+								'bg_image', 'box_bg'];
 		this.settings.bind('change', function () {
 			self.handleSettingsChange.apply(self, arguments);
 		});
@@ -49,7 +52,7 @@ Fontana.GUI = (function ($) {
 			this.clear();
 			this.datasource = new Fontana.datasources.Twitter(value);
 			this.getMessages();
-		};
+		}
 		if (setting == 'effect') {
 			this.pause();
 			if (this.effect) {
@@ -57,6 +60,9 @@ Fontana.GUI = (function ($) {
 				this.effect = null;
 			}
 			this.resume();
+		}
+		if ($.inArray(setting, this.style_settings) > -1) {
+			this.updateStyle();
 		}
 	};
 
@@ -89,12 +95,27 @@ Fontana.GUI = (function ($) {
 		return html;
 	};
 
+	GUI.prototype.updateStyle = function () {
+		var self = this, options = {};
+		$.each(this.style_settings, function (i, key) {
+			options[key] = self.settings.get(key);
+		});
+		if (!this.container.attr('id')) {
+			this.container.attr('id', 'fontana-' + new Date().getTime());
+		}
+		options['container_id'] = this.container.attr('id');
+        if(this.style_tag) {
+            this.style_tag.remove();
+        }
+        this.style_tag = $.tmpl("<style type='text/css'>" + this.settings.get('style_template') + "</style>", options)
+            .appendTo("head");
+	};
+
 	GUI.prototype.animateMessages = function () {
 		var self = this, next, effectName;
 		if (!this.effect) {
 			effectName = this.settings.get('effect');
-			this.effect = new Fontana.effects[effectName](this.container,
-													  '.fontana-message');
+			this.effect = new Fontana.effects[effectName](this.container, '.fontana-message');
 		}
 		if (!this.current || !this.current.next().length) {
 			next = $('.fontana-message:first', this.container);

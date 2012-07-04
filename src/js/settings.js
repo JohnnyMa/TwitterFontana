@@ -28,14 +28,23 @@ Fontana.config.Settings = (function ($) {
 	defaults = {
 		'data_refresh_interval': 45 * 1000, /* ms */
 		'message_animate_interval': 5.5 * 1000, /* ms */
-		'message_template': '<div class="fontana-message">\
-							   <q>{{html text}}</q>\
-							   <figure><img src="${profile_image_url}" width="64" height="64"></figure>\
-                               <cite>@${from_user}</cite>\
-                               <time>${Fontana.utils.prettyDate(created_at)}</time>\
-                             </div>',
+		'message_template': '<div class="fontana-message"> ' +
+							'    <q>{{html text}}</q> ' +
+							'    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
+							'    <cite>@${from_user}</cite>' +
+							'    <time>${Fontana.utils.prettyDate(created_at)}</time>' +
+							'</div>',
+		'style_template': '#${container_id} {' +
+                          '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
+                          '    background-size: contain;' +
+                          '}' +
+                          '.fontana-message {' +
+                          '    background: ${box_bg};' +
+                          '    color: ${text_color};' +
+                          '    font-family: ${font_face||"sans-serif"};' +
+                          '}',
         'effect': 'Slide',
-        'twitter_search': 'Twitter',
+        'twitter_search': 'Twitter'
 	};
 
 	Settings = function () {
@@ -97,7 +106,7 @@ Fontana.config.SettingsGUI = (function ($) {
 			// Listen to submit events on the forms
 			$('form', self.container).submit(function (e) {
 				e.preventDefault();
-				$('input', this).each(function () {
+				$(':input', this).each(function () {
 					self.handleFormChange.call(self, this);
 				});
 			});
