@@ -1,0 +1,76 @@
+<section id="settings">
+<h1><a href="#" class="settings" title="Settings">Customize your stream</a></h1>
+
+<form action="#" id="settingsForm">
+    <fieldset class="main">
+        <legend>Main</legend>
+        <label for="search">Your search term / hashtag</label>
+        <div class="field">
+            <input type="text" name="twitter-search" id="search" value="" placeholder="Twitter search (Like #hashtag)">
+        </div>
+
+        <label for="effect">Transition effect</label>
+        <div class="field">
+            <select name="effect" id="effect">
+                <option value="Slide">Slide</option>
+                <option value="Fade">Fade</option>
+                <option value="Zoom">Zoom</option>
+            </select>
+        </div>
+    </fieldset>
+</form>
+
+<form action="#" id="appearanceForm">
+    <fieldset class="appearance">
+        <legend>Appearance</legend>
+
+        <label for="font_face">Message font</label>
+        <div class="field">
+            <select name="font_face" id="font_face">
+                <option value="Open Sans, sans-serif">Open Sans</option>
+                <option value="Exo, sans-serif">Exo</option>
+                <option value="Imprima, sans-serif">Imprima</option>
+                <option value="Handlee, cursive">Handlee</option>
+                <option value="Crete Round, serif">Crete Round</option>
+                <option value="Enriqueta, serif">Enriqueta</option>
+            </select>
+        </div>
+        <label for="tweet_text_color">Message font color</label>
+        <div class="field">
+            <input type="text" class="color" name="tweet_text_color" id="tweet_text_color" value="" placeholder="Pick a color...">
+        </div>
+        <label for="tweet_special_color">#hashtag/@username color</label>
+        <div class="field">
+            <input type="text" class="color" name="tweet_special_color" id="tweet_special_color"value="" placeholder="Pick a color...">
+        </div>
+    </fieldset>
+
+    <fieldset class="background">
+        <legend>Background</legend>
+
+        <label for="bg_color">Background color</label>
+        <div class="field">
+            <input type="text" class="color" name="bg_color" id="bg_color" value="" placeholder="Pick a color...">
+        </div>
+        <label for="bg_image">Background image url</label>
+        <div class="field">
+            <input type="text" name="bg_image" id="bg_image" placeholder="Insert url...">
+        </div>
+        <label for="tweets_bg">Box color</label>
+        <div class="field">
+            <input type="text" class="color" name="tweets_bg" id="tweets_bg" value="" placeholder="Pick a color...">
+        </div>
+    </fieldset>
+</form>
+
+<form>
+    <fieldset class="url">
+        <div class="field-group">
+            <label for="settings_url">Settings url</label>
+            <div class="field">
+                <input type="text" name="settings_url" id="settings_url" readonly>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</section>

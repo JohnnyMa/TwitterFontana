@@ -20,9 +20,9 @@ which key has changed, the previous value and the new value.
 */
 
 var Fontana = window.Fontana || {};
+Fontana.config = {};
 
-
-Fontana.Settings = (function ($) {
+Fontana.config.Settings = (function ($) {
 	var Settings, defaults;
 
 	defaults = {
@@ -34,7 +34,8 @@ Fontana.Settings = (function ($) {
                                <cite>@${from_user}</cite>\
                                <time>${Fontana.utils.prettyDate(created_at)}</time>\
                              </div>',
-        'effect': 'Fade'
+        'effect': 'Slide',
+        'twitter_search': 'Twitter',
 	};
 
 	Settings = function () {
@@ -48,7 +49,9 @@ Fontana.Settings = (function ($) {
 	Settings.prototype.set = function (key, value) {
 		var old = this.get(key);
 		this.settings[key] = value;
-		this.trigger('change', key, old, value);
+		if (old !== value) {
+			this.trigger('change', key, old, value);
+		}
 	};
 
 	Settings.prototype.update = function (settings) {
@@ -61,4 +64,80 @@ Fontana.Settings = (function ($) {
 	window.MicroEvent.mixin(Settings);
 
 	return Settings;
+}(window.jQuery));
+
+/**
+= SettingsGUI =
+
+The user interface for (a number of) settings.
+*/
+
+Fontana.config.SettingsGUI = (function ($) {
+	var SettingsGUI;
+
+	SettingsGUI = function (container, settings) {
+		var self = this;
+		this.container = container;
+		this.settings = settings;
+	};
+
+	SettingsGUI.prototype.handleFormChange = function (el) {
+		this.settings.set(el.name, $(el).val());
+	};
+
+	SettingsGUI.prototype.draw = function () {
+		var self = this;
+		this.container.empty();
+		$.get('partials/settings.html', function (html) {
+			self.container.html(html);
+			// Listen for change events on the inputs
+			$(':input', self.container).change(function () {
+				self.handleFormChange.call(self, this);
+			});
+			// Listen to submit events on the forms
+			$('form', self.container).submit(function (e) {
+				e.preventDefault();
+				$('input', this).each(function () {
+					self.handleFormChange.call(self, this);
+				});
+			});
+			// Initialize the color pickers
+			$('.color', self.container).each(function () {
+				var input = $(this);
+				var pickerElement = $('<div class="picker"></div>').insertAfter($(this));
+				var swatch = $('<div class="swatch"></div>').insertAfter($(this));
+				var picker = $.farbtastic(pickerElement);
+
+				pickerElement.hide();
+				swatch.click(function () { input.focus(); });
+				swatch.css('background-color', input.val());
+				picker.setColor(input.val());
+
+				input.focus(function () {
+					pickerElement.fadeIn('fast');
+					picker.linkTo(function (color) {
+						swatch.css('background-color', color);
+						input.val(color).change();
+					});
+				});
+
+				input.blur(function () {
+					pickerElement.fadeOut('fast');
+					picker.setColor(input.val());
+					swatch.css('background-color', input.val());
+				});
+
+				input.keyup(function () {
+					picker.setColor(input.val());
+					swatch.css('background-color', input.val());
+				});
+			});
+		});
+	};
+
+	SettingsGUI.prototype.toggle = function () {
+		$('#settings').slideToggle('fast');
+	};
+
+	return SettingsGUI
 }(window.jQuery));

@@ -31,6 +31,7 @@ Fontana.GUI = (function ($) {
 	var GUI;
 
 	GUI = function (datasource, settings) {
+		var self = this;
 		this.datasource = datasource;
 		this.settings = settings;
 		this.messages = [];
@@ -38,6 +39,25 @@ Fontana.GUI = (function ($) {
 		this.animateTimer = -1;
 		this.current = null;
 		this.effect = null;
+		this.settings.bind('change', function () {
+			self.handleSettingsChange.apply(self, arguments);
+		});
+	};
+
+	GUI.prototype.handleSettingsChange = function (setting, old, value) {
+		if (setting == 'twitter-search') {
+			this.clear();
+			this.datasource = new Fontana.datasources.Twitter(value);
+			this.getMessages();
+		};
+		if (setting == 'effect') {
+			this.pause();
+			if (this.effect) {
+				this.effect.destroy();
+				this.effect = null;
+			}
+			this.resume();
+		}
 	};
 
 	/* data retrieval methods */
@@ -113,9 +133,6 @@ Fontana.GUI = (function ($) {
 	GUI.prototype.reset = function () {
 		this.current = null;
 		this.container.empty();
-		if (this.effect) {
-			this.effect.destroy();
-		}
 	};
 
 	GUI.prototype.clear = function () {

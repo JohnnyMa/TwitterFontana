@@ -53,7 +53,7 @@ $(function () {
 	    "profile_image_url": "http://a0.twimg.com/profile_images/2024564220/tumblr_ljbd1lUfT21qb1nat_normal.png",
 	    "text": "One more fake Tweet, and then we'll start over.",
 	}]);
-	staticFontana = new Fontana.GUI(staticData, new Fontana.Settings());
+	staticFontana = new Fontana.GUI(staticData, new Fontana.config.Settings());
 	staticFontana.start($('#static-fontana'));
 });
 
@@ -61,7 +61,7 @@ $(function () {
 	var twitterData, twitterFontana;
 
 	twitterData = new Fontana.datasources.Twitter('Twitter');
-	twitterFontana = new Fontana.GUI(twitterData, new Fontana.Settings());
+	twitterFontana = new Fontana.GUI(twitterData, new Fontana.config.Settings());
 	twitterFontana.start($('#twitter-fontana'));
 });
 
