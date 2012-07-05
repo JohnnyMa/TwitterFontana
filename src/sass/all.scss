@@ -157,6 +157,28 @@ body {
         border: 1px solid transparent;
         @include border-radius(3px);
     }
+
+    form.start {
+        .field {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        input#twitter_search {
+            font-size: 30px;
+            padding: 8px;
+            border: solid 3px #324c10;
+        }
+
+        input.submit {
+            background: #324c10;
+            color: #fff;
+            font-size: 20px;
+            width: 90px;
+            height: 60px;
+            border: none;
+        }
+    }
 }
 
 #fontana-search {
