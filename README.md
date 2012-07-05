@@ -3,7 +3,7 @@
 An open-source alternative for TwitterFountain, based on HTML5, CSS (SASS)
 and Javascript.
 
-- [See and use it at TwitterFontana.com](https://www.twitterfontana.com/)
+- [See and use it at TwitterFontana.com](http://www.twitterfontana.com/)
 - [Follow us on Twitter](https://twitter.com/#!/tweetfontana)
 - [Facebook page](https://www.facebook.com/twitterfontana)
 
