@@ -66,7 +66,7 @@ Fontana.GUI = (function ($) {
                 this.effect.destroy();
                 this.effect = null;
             }
-            this.resume();
+            this.animateMessages();
         }
         if ($.inArray(setting, this.style_settings) > -1) {
             this.updateStyle();
