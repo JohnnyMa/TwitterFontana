@@ -10,6 +10,18 @@
     });
 }());
 
+/* Twitter Tweet button */
+!function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src="//platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+    }
+}(document,"script","twitter-wjs");
+
+/* Google Webfonts */
 WebFontConfig = {
     google: { families: ['Open+Sans:400,600:latin,latin-ext'] }
 };
@@ -22,6 +34,7 @@ WebFontConfig = {
     s.parentNode.insertBefore(wf, s);
 }());
 
+/* Google Analytics*/
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-30289566-2']);
 _gaq.push(['_setDomainName', 'twitterfontana.com']);
