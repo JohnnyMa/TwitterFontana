@@ -9,7 +9,8 @@ using HTML5, CSS (SASS) and Javascript.
 
 ## Quick start ##
 
-Assuming you've got all the scripts loaded, running a custom Fontana is
+Assuming you've got all the scripts loaded, setting up Fontana is just a
+few lines of code.
 
     // Search Twitter for #twitterfontana
     var data = new Fontana.datasources.Twitter('#twitterfontana'); 
@@ -18,6 +19,9 @@ Assuming you've got all the scripts loaded, running a custom Fontana is
     // Setup the GUI and draw it in the selected HTML element
     var fontana = new Fontana.GUI(data, settings);
     fontana.start($('#twitter-fontana'));
+
+You could even set up several Fontanas with different settings and
+datasources on the same page.
 
 ## Fullscreen ##
 
