@@ -17,7 +17,7 @@ Fontana.config.SettingsGUI = (function ($) {
         this.fields = [ 'twitter_search', 'effect',
                         'font_face', 'text_color',
                         'special_color', 'bg_color',
-                        'bg_image', 'box_bg'];
+                        'bg_image', 'box_bg', 'embed'];
     };
 
     /**
@@ -34,15 +34,19 @@ Fontana.config.SettingsGUI = (function ($) {
                 this.settings.set(key, value);
             }
         }
+
+        if(this.settings.get('embed') == 'true') {
+            $("body > header, body > footer").hide();
+        }
     };
 
     /**
      * Generate the url for the current settings
      */
-    SettingsGUI.prototype.generateSettingsUrl = function () {
+    SettingsGUI.prototype.generateEmbedUrl = function () {
         var url,query;
         url = location.protocol + '//' + location.host + location.pathname;
-        query = [];
+        query = ['embed=true'];
         $.each(this.fields, function (i, key) {
             var value = $('#' + key).val();
             if (value) {
@@ -58,7 +62,7 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.handleFormChange = function (el) {
         this.settings.set(el.name, $(el).val());
-        $('#settings_url').val(this.generateSettingsUrl());
+        $('#embed_url').val(this.generateEmbedUrl());
     };
 
     /**
@@ -77,7 +81,7 @@ Fontana.config.SettingsGUI = (function ($) {
                     field.val(self.settings.get(key));
                 }
             });
-            $('#settings_url').val(self.generateSettingsUrl());
+            $('#embed_url').val(self.generateEmbedUrl());
 
             // Listen for change events on the inputs
             $(':input', self.container).change(function () {
@@ -93,7 +97,7 @@ Fontana.config.SettingsGUI = (function ($) {
             });
 
             // Select the settings url on click
-            $('#settings_url').bind('click', function () {
+            $('#embed_url').bind('click', function () {
                 $(this).select();
             });
 
