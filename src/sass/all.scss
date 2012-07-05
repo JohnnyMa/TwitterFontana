@@ -31,7 +31,7 @@ body {
         padding: 0;
     }
 
-    a {
+    a, iframe {
         float: left;
         height: 48px;
         width: 36px;
@@ -40,6 +40,12 @@ body {
         span {
             display: none;
         }
+    }
+    iframe {
+        width: 96px;
+        border: none;
+        height: 21px;
+        margin: 13px 0 14px 0;
     }
 
     .settings {
