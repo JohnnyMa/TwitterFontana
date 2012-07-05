@@ -61,7 +61,7 @@ Fontana.datasources = (function ($) {
     Twitter.prototype.getMessages = function (callback) {
         $.getJSON(this.search_url, {q: this.q}, function (data, status) {
             if (status === 'success') {
-                callback(data.results);
+                callback(data.results.reverse());
             }
         });
     };
