@@ -36,7 +36,7 @@ Fontana.config.Settings = (function ($) {
                             '</div>',
         'style_template': '#${container_id} {' +
                           '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
-                          '    background-size: contain;' +
+                          '    background-size: cover;' +
                           '}' +
                           '.fontana-message {' +
                           '    background: ${box_bg};' +
