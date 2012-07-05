@@ -37,6 +37,8 @@ Fontana.GUI = (function ($) {
         this.messages = [];
         this.dataRefreshTimer = -1;
         this.animateTimer = -1;
+        this.animateScheduled = null;
+        this.animatePause = null;
         this.current = null;
         this.effect = null;
         this.style_settings = [ 'font_face', 'text_color',
@@ -131,6 +133,20 @@ Fontana.GUI = (function ($) {
             .appendTo("head");
     };
 
+    GUI.prototype.scheduleAnimation = function () {
+        var self = this, nextInterval = this.settings.get('message_animate_interval');
+        if (this.animatePause && this.animateScheduled) {
+            nextInterval -= this.animatePause.getTime() - this.animateScheduled.getTime();
+        }
+        if (!this.animateScheduled || nextInterval < 0) {
+            nextInterval = 0;
+        }
+        this.animateTimer = window.setTimeout(function () {
+            self.animateMessages.call(self);
+        }, nextInterval);
+        this.animateScheduled = new Date();
+    }
+
     /**
      * Transition from one message to the next one
      */
@@ -147,10 +163,7 @@ Fontana.GUI = (function ($) {
         }
         this.effect.next(next);
         this.current = next;
-
-        this.animateTimer = window.setTimeout(function () {
-            self.animateMessages.call(self);
-        }, this.settings.get('message_animate_interval'));
+        this.scheduleAnimation();
     };
 
     /* public control methods */
@@ -171,6 +184,7 @@ Fontana.GUI = (function ($) {
     GUI.prototype.pause = function () {
         window.clearTimeout(this.dataRefreshTimer);
         window.clearTimeout(this.animateTimer);
+        this.animatePause = new Date();
     };
 
     /**
@@ -181,7 +195,8 @@ Fontana.GUI = (function ($) {
         this.dataRefreshTimer = window.setTimeout(function () {
             self.getMessages.call(self);
         }, this.settings.get('data_refresh_interval'));
-        this.animateMessages();
+        this.scheduleAnimation();
+        this.animatePause = null;
     };
 
     /**
@@ -198,6 +213,7 @@ Fontana.GUI = (function ($) {
     GUI.prototype.clear = function () {
         this.pause();
         this.reset();
+        this.animatePause = null;
     };
 
     return GUI;
