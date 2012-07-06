@@ -95,7 +95,22 @@ Fontana.GUI = (function ($) {
         $.each(messages, function (i, message) {
             self.container.append(self.formatMessage(message));
         });
+        this.purgeMessages();
         this.resume();
+    };
+
+    /**
+     * Purge messages in the DOM (if necesarry)
+     */
+    GUI.prototype.purgeMessages = function (messages) {
+        var self = this, all, prev;
+        all = $('.fontana-message', self.container);
+        if (this.current && all.length >= 30) {
+            prev = $(this.current).prevAll('.fontana-message');
+            if (prev.length >= 15 && prev.length < Math.ceil(all.length / 2)) {
+                prev.slice(0, Math.floor(prev.length / 2)).remove();
+            }
+        }
     };
 
     /* display methods */
