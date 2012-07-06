@@ -17,7 +17,8 @@ Fontana.config.SettingsGUI = (function ($) {
         this.fields = [ 'twitter_search', 'effect',
                         'font_face', 'text_color',
                         'special_color', 'bg_color',
-                        'bg_image', 'box_bg', 'embed'];
+                        'bg_image', 'box_bg',
+                        'embed', 'preset'];
     };
 
     /**
@@ -43,17 +44,24 @@ Fontana.config.SettingsGUI = (function ($) {
     /**
      * Generate the url for the current settings
      */
-    SettingsGUI.prototype.generateEmbedUrl = function () {
-        var url,query;
+    SettingsGUI.prototype.generateSettingsUrl = function (query) {
+        var url;
+        query = query || {'preset': 'true'};
         url = location.protocol + '//' + location.host + location.pathname;
-        query = ['embed=true'];
         $.each(this.fields, function (i, key) {
             var value = $('#' + key).val();
             if (value) {
-                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                query[key] = value;
             }
         });
-        return url + '?' + query.join('&');
+        return url + '?' + $.param(query);
+    };
+
+    /**
+     * Generate the url for the current settings and add embed=true
+     */
+    SettingsGUI.prototype.generateEmbedUrl = function () {
+        return this.generateSettingsUrl({'embed': 'true'});
     };
 
     /**
@@ -62,7 +70,7 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.handleFormChange = function (el) {
         this.settings.set(el.name, $(el).val());
-        $('#embed_url').val(this.generateEmbedUrl());
+        this.updatePresetUrl();
     };
 
     /**
@@ -74,6 +82,11 @@ Fontana.config.SettingsGUI = (function ($) {
         $.get('partials/settings.html', function (html) {
             self.container.html(html);
 
+            // Hide the settings panel in case of preset
+            if(self.settings.get('preset') == 'true') {
+                $('#settings').hide();
+            }
+
             // Prefill the inputs with the current settings
             $.each(self.fields, function (i, key) {
                 var field = $('#' + key);
@@ -81,7 +94,7 @@ Fontana.config.SettingsGUI = (function ($) {
                     field.val(self.settings.get(key));
                 }
             });
-            $('#embed_url').val(self.generateEmbedUrl());
+            self.updatePresetUrl();
 
             // Listen for change events on the inputs
             $(':input', self.container).change(function () {
@@ -97,7 +110,7 @@ Fontana.config.SettingsGUI = (function ($) {
             });
 
             // Select the settings url on click
-            $('#embed_url').bind('click', function () {
+            $('#preset_url').bind('click', function () {
                 $(this).select();
             });
 
@@ -133,6 +146,13 @@ Fontana.config.SettingsGUI = (function ($) {
                 });
             });
         });
+    };
+
+    /**
+     * Update preset url field
+     */
+    SettingsGUI.prototype.updatePresetUrl = function(first_argument) {
+        $('#preset_url').val(this.generateSettingsUrl());
     };
 
     /**
