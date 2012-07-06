@@ -92,9 +92,6 @@ Fontana.GUI = (function ($) {
     GUI.prototype.handleMessages = function (messages) {
         var self = this;
         this.pause();
-        if (this.current) {
-            this.current.prevAll('.fontana-message').remove();
-        }
         $.each(messages, function (i, message) {
             self.container.append(self.formatMessage(message));
         });

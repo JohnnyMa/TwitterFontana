@@ -108,7 +108,7 @@ Fontana.datasources = (function ($) {
         var self = this;
         $.getJSON(this.search_url, {q: this.q, since_id: this.since_id}, function (data, status) {
             if (status === 'success') {
-                if (data.results.length) {
+                if (data.results && data.results.length) {
                     self.updateSinceId(data.results);
                     self.trigger('messages', data.results.reverse());
                 }

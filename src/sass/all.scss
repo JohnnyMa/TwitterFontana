@@ -15,6 +15,11 @@ body {
     right: 0;
     left:0;
     z-index: 5;
+
+    a:link, a:visited {
+        color: #fff;
+        text-decoration: none;
+    }
 }
 
 .tools {
