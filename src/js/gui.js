@@ -201,6 +201,8 @@ Fontana.GUI = (function ($) {
      */
     GUI.prototype.reset = function () {
         this.current = null;
+        this.animateScheduled = null;
+        this.animatePause = null;
         this.container.empty();
     };
 
