@@ -26,9 +26,9 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.loadSettingsFromUrl = function () {
         var settings = {}, params, i, pair, key, value;
-        params = window.location.search.substring(1).split('&');
+        params = window.location.search.substring(1).replace(/\+/g, ' ').split('&');
         for (i = 0; i < params.length; i++) {
-            pair = params[i].split('=');
+            pair = params[i].split('=')
             key = decodeURIComponent(pair[0]);
             value = decodeURIComponent(pair[1]);
             if ($.inArray(key, this.fields) > -1) {
