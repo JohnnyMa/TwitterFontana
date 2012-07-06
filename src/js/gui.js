@@ -33,9 +33,9 @@ Fontana.GUI = (function ($) {
     GUI = function (datasource, settings) {
         var self = this;
         this.datasource = datasource;
+        this.datasourceListener = null;
         this.settings = settings;
         this.messages = [];
-        this.dataRefreshTimer = -1;
         this.animateTimer = -1;
         this.animateScheduled = null;
         this.animatePause = null;
@@ -56,8 +56,12 @@ Fontana.GUI = (function ($) {
         if (setting == 'twitter_search') {
             this.clear();
             if (value) {
+                if (this.datasource) {
+                    this.datasource.stop();
+                }
                 this.datasource = new Fontana.datasources.Twitter(value);
-                this.getMessages();
+                this.setupDatasourceListener();
+                this.datasource.getMessages();
             }
         }
         if (setting == 'effect') {
@@ -73,19 +77,14 @@ Fontana.GUI = (function ($) {
         }
     };
 
-    /* data retrieval methods */
-
-    /**
-     * Get the messages from the datasource
-     */
-    GUI.prototype.getMessages = function () {
+    /* Setup datasource listener */
+    GUI.prototype.setupDatasourceListener = function () {
         var self = this;
-        this.datasource.getMessages(function (messages) {
-            if (messages) {
-                self.handleMessages.call(self, messages);
-            }
-        });
-    };
+        this.datasourceListener = function (messages) {
+            self.handleMessages.call(self, messages);
+        };
+        this.datasource.bind('messages', this.datasourceListener);
+    }
 
     /**
      * Handle the messages from the datasource
@@ -172,17 +171,20 @@ Fontana.GUI = (function ($) {
      * Start the fountain in the given container
      */
     GUI.prototype.start = function (node) {
+        var self = this;
         this.container = node;
         this.updateStyle();
         this.clear();
-        this.getMessages();
+        this.setupDatasourceListener();
+        this.datasource.getMessages();
     };
 
     /**
      * Stop all running timers
      */
     GUI.prototype.pause = function () {
-        window.clearTimeout(this.dataRefreshTimer);
+        this.datasource.unbind('messages', this.datasourceListener);
+        this.datasourceListener = null;
         window.clearTimeout(this.animateTimer);
         this.animatePause = new Date();
     };
@@ -192,9 +194,7 @@ Fontana.GUI = (function ($) {
      */
     GUI.prototype.resume = function () {
         var self = this;
-        this.dataRefreshTimer = window.setTimeout(function () {
-            self.getMessages.call(self);
-        }, this.settings.get('data_refresh_interval'));
+        this.setupDatasourceListener();
         this.scheduleAnimation();
         this.animatePause = null;
     };

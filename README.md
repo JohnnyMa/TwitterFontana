@@ -85,9 +85,6 @@ Setting up Fontana with this datasource looks like this:
 
 The following settings are available
 
-`data_refresh_interval`
-Interval between fetching data from the datasource (in miliseconds).
-
 `message_animate_interval`
 The amount of time a message is shown (in miliseconds).
 
