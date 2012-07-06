@@ -23,7 +23,7 @@ few lines of code.
 You could even set up several Fontanas with different settings and
 datasources on the same page.
 
-## Fullscreen ##
+### Fullscreen ###
 
 Fullscreen mode uses the new HTML5 fullscreen API. Fontana comes with a
 simple wrapper (this method only works if it's called from a click or
@@ -33,6 +33,9 @@ key event).
 
 Note that the fullscreen API is currently only implemented in Gecko and WebKit
 based browsers (Firefox, Chrome, Safari and some lesser known browsers).
+
+Users of other browser (e.g. Internet Explorer) can press F11 to go fullscreen.
+The drawback is that this doesn't hide the interface.
 
 ## Datasources ##
 
@@ -123,7 +126,19 @@ Background image of the container
 `box_bg`
 Background color of the message container
 
-## Further notes
+## Building Twitter Fontana ##
+
+The repository doesn't include minified scripts. Instead it offers a Makefile
+with a build command.
+
+Running this build script requires a unix like environment (Linux, OSX etc.)
+with `make`, `tar` & `sed` availabele (should be there by default on Linux).
+
+The only non-standard tool is [jammit](https://github.com/documentcloud/jammit/).
+Insalling jammit can be easily done by entering ``sudo gem install jammit``
+in your terminal (if you've got ruby and rubygems available).
+
+## Further notes ##
 
 Created by Jaap Roes, Jorik Tangelder and Arjen Scherff-de Water
 at [Eight Media](http://www.eight.nl/) in Arnhem, the Netherlands.
