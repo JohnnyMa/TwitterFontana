@@ -25,6 +25,8 @@ build:
 	sed -i 's/<!-- scripts concatenated/<!-- scripts concatenated -->/' build/*.html
 	sed -i 's/\/scripts concatenated -->/<!-- \/scripts concatenated -->/' build/*.html
 	sed -i '/<!-- scripts development -->/,/<!-- \/scripts development -->/d' build/*.html
+	# Add cache busting querystring to assets
+	sed -i 's/{{BUILDID}}/'"$(BUILDID)"'/' build/*.html
 	# Create a tar-ball
 	tar -czvf "twitterfontana.$(BUILDID).tgz" build
 	@echo "Done!"
