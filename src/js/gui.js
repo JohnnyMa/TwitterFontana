@@ -147,7 +147,7 @@ Fontana.GUI = (function ($) {
      * Transition from one message to the next one
      */
     GUI.prototype.animateMessages = function () {
-        var self = this, next, effectName;
+        var self = this, next, effectName, nextTime;
         if (!this.effect) {
             effectName = this.settings.get('effect');
             this.effect = new Fontana.effects[effectName](this.container, '.fontana-message');
@@ -157,6 +157,10 @@ Fontana.GUI = (function ($) {
         } else {
             next = this.current.next();
         }
+        // update time
+        nextTime = $('time', next)
+        nextTime.text(Fontana.utils.prettyDate(nextTime.attr('title')));
+        // transition
         this.effect.next(next);
         this.current = next;
         this.scheduleAnimation();

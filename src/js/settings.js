@@ -31,7 +31,7 @@ Fontana.config.Settings = (function ($) {
                             '    <q>{{html html}}</q> ' +
                             '    <figure><img src="${profile_image_url}" width="64" height="64"></figure> ' +
                             '    <cite>@${from_user}</cite>' +
-                            '    <time>${Fontana.utils.prettyDate(created_at)}</time>' +
+                            '    <time title="${created_at}">${created_at}</time>' +
                             '</div>',
         'style_template': '#${container_id} {' +
                           '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
