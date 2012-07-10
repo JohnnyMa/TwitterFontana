@@ -124,7 +124,7 @@ Fontana.datasources = (function ($) {
     };
 
     Twitter.prototype.updateSinceId = function (messages) {
-        this.since_id = messages[0].id;
+        this.since_id = messages[0].id + 1;
     }
 
     window.MicroEvent.mixin(Twitter);
