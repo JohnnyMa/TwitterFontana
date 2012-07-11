@@ -27,6 +27,7 @@ $(function () {
     // Make fullscreen buttons work
     $('.fullscreen').click(function (e) {
         e.preventDefault();
+        settingsGUI.toggle(false);
         Fontana.utils.requestFullscreen(document.getElementById('twitter-fontana'));
     });
 });
@@ -39,6 +40,8 @@ WebFontConfig = {
                          'Handlee::latin,latin-ext',
                          'Imprima::latin,latin-ext'] }
 };
+
+
 (function() {
     var wf = document.createElement('script');
     wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
@@ -58,6 +61,7 @@ _gaq.push(['_trackPageview']);
     ga.src = 'http://www.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
 
 var _gauges = _gauges || [];
 (function() {

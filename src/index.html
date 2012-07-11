@@ -1,9 +1,16 @@
 <!doctype html>
 <html>
 <head>
-    <title>Twitter Fontana - Show your tweets on a (huge) screen</title>
+    <title>Create you own Twitter Fontana</title>
     <meta name="description" content="Twitter Fontana is a free solution for displaying tweets real-time on a screen or wall. It's an open source Twitter Fountain alternative with greater customisation options.">
+
+    <script src="js/lib/modernizr.js"></script>
+
     <link rel="stylesheet" href="css/all.css?build={{BUILDID}}">
+    <link href="js/lib/farbtastic/farbtastic.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta property="og:title" content="Twitter Fontana">
     <meta property="og:description" content="Twitter Fontana is a free solution for displaying tweets real-time on a screen or wall. It's an open source Twitter Fountain alternative with greater customisation options.">
     <meta property="og:type" content="website">
@@ -14,8 +21,14 @@
 </head>
 <body>
 
-<header>
+<header id="header">
     <h1 class="logo"><a href="http://twitterfontana.com/">Twitter Fontana</a></h1>
+
+    <div class="logos">
+        <a class="github" href="https://github.com/EightMedia/TwitterFontana" target="_blank" title="Fork Twitter Fontana on GitHub"><img src="img/github.png" width="46" height="20" alt="GitHub"></a>
+        <a class="eight" href="http://www.eight.nl/" target="_blank"><img src="img/eight.png" width="55" height="20" alt="Eight Media Internetbureau Arnhem" title="Webdesign &amp; Internet marketing in Arnhem"></a>
+    </div>
+
     <ul class="tools">
         <li>
             <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://twitterfontana.com" data-text="Clean, fully customizable, Twitter fountain without Flash" data-related="tweetfontana" data-hashtags="twitterfontana">Tweet</a>
@@ -52,21 +65,10 @@
     </div>
 </div>
 
-<section id="settings">
-    <div class="logos">
-        <a class="github" href="https://github.com/EightMedia/TwitterFontana" target="_blank" title="Fork Twitter Fontana on GitHub"><img src="img/github.png" width="46" height="20" alt="GitHub"></a>
-        <a class="eight" href="http://www.eight.nl/" target="_blank"><img src="img/eight.png" width="55" height="20" alt="Eight Media Internetbureau Arnhem" title="Webdesign &amp; Internet marketing in Arnhem"></a>
-    </div>
-
+<section id="start">
     <h1>Start your own Fontana</h1>
     <form action="fountain.html" class="start">
-        <div class="field">
-            <input type="text" name="twitter_search" id="twitter_search" value="" autofocus required placeholder="Twitter search (Like #hashtag)">
-        </div>
-
-        <div class="field">
-            <input type="submit" class="submit" value="Try it!">
-        </div>
+        <input type="text" name="twitter_search" id="twitter_search" value="" autofocus required placeholder="Twitter search (Like #hashtag)"> <input type="submit" class="submit" value="Try it!">
     </form>
 </section>
 
@@ -75,6 +77,7 @@
 <script src="js/fontana.base.min.js?build={{BUILDID}}"></script>
 /scripts concatenated -->
 <!-- scripts development -->
+<script src="js/lib/respond.js"></script>
 <script src="js/lib/jquery.tmpl-1.0.0pre.min.js"></script>
 <script src="js/lib/transformjs.1.0.beta.2.min.js"></script>
 <script src="js/lib/microevent-1.0.0.min.js"></script>

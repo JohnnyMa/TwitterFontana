@@ -14,8 +14,8 @@ Fontana.config.SettingsGUI = (function ($) {
         var self = this;
         this.container = container;
         this.settings = settings;
-        this.fields = [ 'twitter_search', 'effect',
-                        'font_face', 'text_color',
+        this.fields = [ 'twitter_search', 'effect', 'message_animate_interval',
+                        'custom_css', 'font_face', 'text_color',
                         'special_color', 'bg_color',
                         'bg_image', 'box_bg',
                         'embed', 'preset'];
@@ -44,9 +44,10 @@ Fontana.config.SettingsGUI = (function ($) {
     /**
      * Generate the url for the current settings
      */
-    SettingsGUI.prototype.generateSettingsUrl = function (query) {
+    SettingsGUI.prototype.generateEmbedCode = function () {
+        // first generate the url
         var url;
-        query = query || {'preset': 'true'};
+        var query = {'embed': 'true'};
         url = location.protocol + '//' + location.host + location.pathname;
         $.each(this.fields, function (i, key) {
             var value = $('#' + key).val();
@@ -54,15 +55,12 @@ Fontana.config.SettingsGUI = (function ($) {
                 query[key] = value;
             }
         });
-        return url + '?' + $.param(query);
+        url = url + '?' + $.param(query);
+
+        // set iframe code
+        $('#embed_html').val('<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe>');
     };
 
-    /**
-     * Generate the url for the current settings and add embed=true
-     */
-    SettingsGUI.prototype.generateEmbedUrl = function () {
-        return this.generateSettingsUrl({'embed': 'true'});
-    };
 
     /**
      * Handle a value change in a settings form by updating
@@ -70,7 +68,7 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.handleFormChange = function (el) {
         this.settings.set(el.name, $(el).val());
-        this.updatePresetUrl();
+        this.generateEmbedCode();
     };
 
     /**
@@ -78,14 +76,20 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.draw = function () {
         var self = this;
-        this.container.empty();
-        $.get('partials/settings.html', function (html) {
-            self.container.html(html);
 
+        this.container.empty();
+
+        if(self.settings.get('embed') == 'true') {
+            self.toggle(false);
+        }
+
+        $.get('partials/settings.html', function (html) {
             // Hide the settings panel in case of preset
-            if(self.settings.get('preset') == 'true') {
-                $('#settings').hide();
+            if(self.settings.get('embed') != 'true') {
+                $("body").addClass("settings");
             }
+
+            self.container.html(html);
 
             // Prefill the inputs with the current settings
             $.each(self.fields, function (i, key) {
@@ -94,7 +98,7 @@ Fontana.config.SettingsGUI = (function ($) {
                     field.val(self.settings.get(key));
                 }
             });
-            self.updatePresetUrl();
+            self.generateEmbedCode();
 
             // Listen for change events on the inputs
             $(':input', self.container).change(function () {
@@ -110,7 +114,7 @@ Fontana.config.SettingsGUI = (function ($) {
             });
 
             // Select the settings url on click
-            $('#preset_url').bind('click', function () {
+            $('#embed_html').bind('click', function () {
                 $(this).select();
             });
 
@@ -148,18 +152,12 @@ Fontana.config.SettingsGUI = (function ($) {
         });
     };
 
-    /**
-     * Update preset url field
-     */
-    SettingsGUI.prototype.updatePresetUrl = function(first_argument) {
-        $('#preset_url').val(this.generateSettingsUrl());
-    };
 
     /**
      * Show/Hide the settings panel.
      */
-    SettingsGUI.prototype.toggle = function () {
-        $('#settings').slideToggle('fast');
+    SettingsGUI.prototype.toggle = function(show) {
+        $("body").toggleClass("settings", show);
     };
 
     return SettingsGUI;

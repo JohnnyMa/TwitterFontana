@@ -15,10 +15,20 @@ Fontana.effects = (function ($) {
         this.before_show_prop = {};
         this.show_prop = {};
         this.hide_prop = {};
-        this.prev_element = null;
+        this.cur_element = null;
+
+        var self = this;
+
+        $(window).bind("resize", function() {
+            self.positionVerticalMiddle();
+        });
     };
 
     Base.prototype.positionVerticalMiddle = function (element) {
+        if(!element) {
+            element = this.cur_element;
+        }
+
         var baseHeight = this.container.height() - (this.container.height() % 12) - 24;
         element.css({ top: Math.floor((baseHeight - element.height()) / 2) });
     };
@@ -26,8 +36,8 @@ Fontana.effects = (function ($) {
     Base.prototype.next = function (element) {
         var self = this;
         this.positionVerticalMiddle(element);
-        if (this.prev_element) {
-            this.prev_element.animate(this.hide_prop, this.duration,
+        if (this.cur_element) {
+            this.cur_element.animate(this.hide_prop, this.duration,
                 function () {
                     element.animate(self.before_show_prop, 0)
                         .animate(self.show_prop, self.duration);
@@ -36,7 +46,7 @@ Fontana.effects = (function ($) {
             element.animate(this.before_show_prop, 0)
                 .animate(this.show_prop, this.duration);
         }
-        this.prev_element = element;
+        this.cur_element = element;
     };
 
     Base.prototype.destroy = function () {

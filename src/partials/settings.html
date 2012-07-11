@@ -4,9 +4,20 @@
     <form action="#" id="settingsForm">
         <fieldset class="main">
             <legend>Main</legend>
-            <label for="twitter_search">Your search term / hashtag</label>
+            <label for="twitter_search">Your Twitter search - <a href="#search_operators">search operators</a></label>
             <div class="field">
                 <input type="text" name="twitter_search" id="twitter_search" value="" placeholder="Twitter search (Like #hashtag)">
+            </div>
+        </fieldset>
+    </form>
+
+    <form action="#" id="appearanceForm">
+        <fieldset>
+            <legend>Messages</legend>
+
+            <label for="message_animate_interval">Show messages for x ms</label>
+            <div class="field">
+                <input type="text" name="message_animate_interval" id="message_animate_interval" value="" placeholder="Time in miliseconds...">
             </div>
 
             <label for="effect">Transition effect</label>
@@ -17,16 +28,22 @@
                     <option value="Zoom">Zoom</option>
                 </select>
             </div>
-        </fieldset>
-    </form>
 
-    <form action="#" id="appearanceForm">
+            <label for="custom_css">Custom stylesheet</label>
+            <div class="field">
+                <input type="text" name="custom_css" id="custom_css" value="" placeholder="Url to your stylesheet...">
+            </div>
+        </fieldset>
+
         <fieldset class="appearance">
             <legend>Appearance</legend>
 
             <label for="font_face">Message font</label>
             <div class="field">
                 <select name="font_face" id="font_face">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Verdana, sans-serif">Verdana</option>
+                    <option value="Helvetica, 'Helvetica Neue', Arial, sans-serif">Helvetica</option>
                     <option value="Open Sans, sans-serif">Open Sans</option>
                     <option value="Exo, sans-serif">Exo</option>
                     <option value="Imprima, sans-serif">Imprima</option>
@@ -41,7 +58,7 @@
             </div>
             <label for="special_color">#hashtag/@username color</label>
             <div class="field">
-                <input type="text" class="color" name="special_color" id="special_color"value="" placeholder="Pick a color...">
+                <input type="text" class="color" name="special_color" id="special_color" value="" placeholder="Pick a color...">
             </div>
         </fieldset>
 
@@ -56,26 +73,105 @@
             <div class="field">
                 <input type="text" name="bg_image" id="bg_image" placeholder="Insert url...">
             </div>
-            <label for="box_bg">Box color</label>
+            <label for="box_bg">Message color</label>
             <div class="field">
                 <input type="text" class="color" name="box_bg" id="box_bg" value="" placeholder="Pick a color...">
             </div>
         </fieldset>
     </form>
 
-    <form>
+    <form id="embedForm">
         <fieldset class="url">
             <div class="field-group">
-                <label for="preset_url">Preset url</label>
+                <label for="embed_html">Embed html code</label>
                 <div class="field">
-                    <input type="text" name="preset_url" id="preset_url" readonly>
+                    <textarea name="embed_html" id="embed_html" readonly></textarea>
                 </div>
             </div>
         </fieldset>
     </form>
 
-    <div class="logos">
-        <a class="github" href="https://github.com/EightMedia/TwitterFontana" target="_blank" title="Fork Twitter Fontana on GitHub"><img src="img/github.png" width="46" height="20" alt="GitHub"></a>
-        <a class="eight" href="http://www.eight.nl/" target="_blank"><img src="img/eight.png" width="55" height="20" alt="Eight Media Internetbureau Arnhem" title="Webdesign &amp; Online marketing in Arnhem"></a>
+    <div class="search_operators" id="search_operators">
+        <h2>Search operators</h2>
+        <p>In addition to the parameters listed in the <a href="/doc/get/search">Search API documentation</a>, there are a number of operators you can use to modify the behavior of query.</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Example</th>
+                <th>Finds tweets...</th>
+            </tr><tr>
+            </tr></thead>
+            <tbody>
+            <tr>
+                <td>twitter search</td>
+                <td>containing both "twitter" and "search". This is the default operator</td>
+            </tr>
+            <tr>
+                <td>"happy hour"</td>
+                <td>containing the exact phrase "happy hour"</td>
+            </tr>
+            <tr>
+                <td>love OR hate</td>
+                <td>containing either "love" or "hate" (or both)</td>
+            </tr>
+            <tr>
+                <td>beer -root</td>
+                <td>containing "beer" but not "root"</td>
+            </tr>
+            <tr>
+                <td>#haiku</td>
+                <td>containing the hashtag "haiku"</td>
+            </tr>
+            <tr>
+                <td>from:twitterapi</td>
+                <td>sent from the user @twitterapi</td>
+            </tr>
+            <tr>
+                <td>to:twitterapi</td>
+                <td>sent to the user @twitterapi</td>
+            </tr>
+            <tr>
+                <td>place:opentable:2</td>
+                <td>about the place with OpenTable ID 2</td>
+            </tr>
+            <tr>
+                <td>place:247f43d441defc03</td>
+                <td>about the place with Twitter ID 247f43d441defc03</td>
+            </tr>
+            <tr>
+                <td>@twitterapi</td>
+                <td>mentioning @twitterapi</td>
+            </tr>
+            <tr>
+                <td>superhero since:2011-05-09</td>
+                <td>containing "superhero" and sent since date "2011-05-09" (year-month-day).</td>
+            </tr>
+            <tr>
+                <td>twitterapi until:2011-05-09</td>
+                <td>containing "twitterapi" and sent before the date "2011-05-09".</td>
+            </tr>
+            <tr>
+                <td>movie -scary :)</td>
+                <td>containing "movie", but not "scary", and with a positive attitude.</td>
+            </tr>
+            <tr>
+                <td>flight :(</td>
+                <td>containing "flight" and with a negative attitude.</td>
+            </tr>
+            <tr>
+                <td>traffic ?</td>
+                <td>containing "traffic" and asking a question.</td>
+            </tr>
+            <tr>
+                <td>hilarious filter:links</td>
+                <td>containing "hilarious" and with a URL.</td>
+            </tr>
+            <tr>
+                <td>news source:tweet_button</td>
+                <td>containing "news" and entered via the Tweet Button</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </section>

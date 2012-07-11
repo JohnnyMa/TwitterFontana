@@ -33,7 +33,8 @@ Fontana.config.Settings = (function ($) {
                             '    <cite>@${from_user}</cite>' +
                             '    <time title="${created_at}">${created_at}</time>' +
                             '</div>',
-        'style_template': '#${container_id} {' +
+        'style_template': '@import url("${custom_css}");' +
+                          '#${container_id} {' +
                           '    background: ${bg_color} url(${bg_image}) no-repeat center center;' +
                           '    background-size: cover;' +
                           '}' +
@@ -48,12 +49,13 @@ Fontana.config.Settings = (function ($) {
                           '.fontana-message .hashtag, .fontana-message .username {'+
                           '    color: ${special_color}' +
                           '}',
+        'custom_css': '',
         'twitter_search': 'Twitter',
         'effect': 'Slide',
         'font-face': 'Open Sans, sans-serif',
         'text_color': '#ffffff',
         'special_color': '#aaea71',
-        'bg_color': '#76ab30',
+        'bg_color': '#482b73',
         'box_bg': '#80b43c'
     };
 

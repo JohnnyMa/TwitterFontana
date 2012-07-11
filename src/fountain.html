@@ -2,8 +2,15 @@
 <html>
 <head>
     <title>Create you own Twitter Fontana</title>
+    <meta name="description" content="Twitter Fontana is a free solution for displaying tweets real-time on a screen or wall. It's an open source Twitter Fountain alternative with greater customisation options.">
+
+    <script src="js/lib/modernizr.js"></script>
+
     <link rel="stylesheet" href="css/all.css?build={{BUILDID}}">
     <link href="js/lib/farbtastic/farbtastic.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta property="og:title" content="Twitter Fontana">
     <meta property="og:description" content="Twitter Fontana is a free solution for displaying tweets real-time on a screen or wall. It's an open source Twitter Fountain alternative with greater customisation options.">
     <meta property="og:type" content="website">
@@ -16,6 +23,12 @@
 
 <header id="header">
     <h1 class="logo"><a href="http://twitterfontana.com/">Twitter Fontana</a></h1>
+
+    <div class="logos">
+        <a class="github" href="https://github.com/EightMedia/TwitterFontana" target="_blank" title="Fork Twitter Fontana on GitHub"><img src="img/github.png" width="46" height="20" alt="GitHub"></a>
+        <a class="eight" href="http://www.eight.nl/" target="_blank"><img src="img/eight.png" width="55" height="20" alt="Eight Media Internetbureau Arnhem" title="Webdesign &amp; Internet marketing in Arnhem"></a>
+    </div>
+
     <ul class="tools">
         <li><a href="#" class="settings" title="Settings"><span>Settings</span></a></li>
         <li><a href="#" class="fullscreen" title="Fullscreen"><span>Fullscreen</span></a></li>
@@ -31,6 +44,7 @@
 <script src="js/fontana.config.min.js?build={{BUILDID}}"></script>
 /scripts concatenated -->
 <!-- scripts development -->
+<script src="js/lib/respond.js"></script>
 <script src="js/lib/jquery.tmpl-1.0.0pre.min.js"></script>
 <script src="js/lib/transformjs.1.0.beta.2.min.js"></script>
 <script src="js/lib/microevent-1.0.0.min.js"></script>

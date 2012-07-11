@@ -41,7 +41,7 @@ Fontana.GUI = (function ($) {
         this.animatePause = null;
         this.current = null;
         this.effect = null;
-        this.style_settings = [ 'font_face', 'text_color',
+        this.style_settings = [ 'font_face', 'text_color', 'custom_css',
                                 'special_color', 'bg_color',
                                 'bg_image', 'box_bg'];
         this.settings.bind('change', function () {
@@ -156,7 +156,7 @@ Fontana.GUI = (function ($) {
             self.animateMessages.call(self);
         }, nextInterval);
         this.animateScheduled = new Date();
-    }
+    };
 
     /**
      * Transition from one message to the next one
@@ -167,11 +167,17 @@ Fontana.GUI = (function ($) {
             effectName = this.settings.get('effect');
             this.effect = new Fontana.effects[effectName](this.container, '.fontana-message');
         }
-        if (!this.current || !this.current.next().length) {
+        if (!this.current) {
             next = $('.fontana-message:first', this.container);
         } else {
             next = this.current.next();
         }
+
+        if(!next.length) {
+            this.scheduleAnimation();
+            return;
+        }
+
         // update time
         nextTime = $('time', next)
         nextTime.text(Fontana.utils.prettyDate(nextTime.attr('title')));

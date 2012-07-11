@@ -101,7 +101,7 @@ Fontana.datasources = (function ($) {
         this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
         this.q = q;
         this.since_id = 0;
-        this.refreshTimeout;
+        this.refreshTimeout = null;
     };
 
     Twitter.prototype.getMessages = function () {
@@ -125,7 +125,7 @@ Fontana.datasources = (function ($) {
 
     Twitter.prototype.updateSinceId = function (messages) {
         this.since_id = messages[0].id + 1;
-    }
+    };
 
     window.MicroEvent.mixin(Twitter);
 
