@@ -60,7 +60,7 @@ Fontana.config.SettingsGUI = (function ($) {
     SettingsGUI.prototype.generateEmbedCode = function () {
         // first generate the url
         var url = this.generateSettingsUrl({'embed': 'true'});
-        return '<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe><a href="http://twitterfontana.com" target="_blank" title="Twitter Fontana">Create your own Twitter Fountain</a>';
+        return '<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe><a href="http://twitterfontana.com" target="_blank" title="Create your own Twitter Fountain">Powered by Twitter Fontana</a>';
     };
 
     /**
