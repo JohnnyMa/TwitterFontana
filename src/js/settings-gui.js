@@ -44,10 +44,9 @@ Fontana.config.SettingsGUI = (function ($) {
     /**
      * Generate the url for the current settings
      */
-    SettingsGUI.prototype.generateEmbedCode = function () {
-        // first generate the url
+    SettingsGUI.prototype.generateSettingsUrl = function (query) {
         var url;
-        var query = {'embed': 'true'};
+        var query = query || {'preset': 'true'};
         url = location.protocol + '//' + location.host + location.pathname;
         $.each(this.fields, function (i, key) {
             var value = $('#' + key).val();
@@ -55,12 +54,14 @@ Fontana.config.SettingsGUI = (function ($) {
                 query[key] = value;
             }
         });
-        url = url + '?' + $.param(query);
-
-        // set iframe code
-        $('#embed_html').val('<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe>');
+        return url + '?' + $.param(query);
     };
 
+    SettingsGUI.prototype.generateEmbedCode = function () {
+        // first generate the url
+        var url = this.generateSettingsUrl({'embed': 'true'});
+        return '<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe><a href="http://twitterfontana.com" target="_blank" title="Twitter Fontana">Create your own Twitter Fountain</a>';
+    };
 
     /**
      * Handle a value change in a settings form by updating
@@ -68,7 +69,8 @@ Fontana.config.SettingsGUI = (function ($) {
      */
     SettingsGUI.prototype.handleFormChange = function (el) {
         this.settings.set(el.name, $(el).val());
-        this.generateEmbedCode();
+        this.updatePresetUrl();
+        this.updateEmbedCode();
     };
 
     /**
@@ -79,10 +81,6 @@ Fontana.config.SettingsGUI = (function ($) {
 
         this.container.empty();
 
-        if(self.settings.get('embed') == 'true') {
-            self.toggle(false);
-        }
-
         $.get('partials/settings.html', function (html) {
             // Hide the settings panel in case of preset
             if(self.settings.get('embed') != 'true') {
@@ -91,6 +89,10 @@ Fontana.config.SettingsGUI = (function ($) {
 
             self.container.html(html);
 
+            if(self.settings.get('embed') == 'true' || self.settings.get('preset') == 'true') {
+                self.toggle(false);
+            }
+
             // Prefill the inputs with the current settings
             $.each(self.fields, function (i, key) {
                 var field = $('#' + key);
@@ -98,7 +100,8 @@ Fontana.config.SettingsGUI = (function ($) {
                     field.val(self.settings.get(key));
                 }
             });
-            self.generateEmbedCode();
+            self.updatePresetUrl();
+            self.updateEmbedCode();
 
             // Listen for change events on the inputs
             $(':input', self.container).change(function () {
@@ -119,8 +122,16 @@ Fontana.config.SettingsGUI = (function ($) {
                 $('#search_operators').slideToggle();
             });
 
+            // Toggle the embed html/preset url textareas on label click
+            $('#embedForm label').click(function (e) {
+                $('#embedForm label').removeClass('active')
+                $(this).addClass('active');
+                $('#embed_html, #preset_url').hide();
+                $('#' + $(this).attr('for')).show();
+            });
+
             // Select the settings url on click
-            $('#embed_html').bind('click', function () {
+            $('#embed_html, #preset_url').click(function (e) {
                 $(this).select();
             });
 
@@ -158,6 +169,19 @@ Fontana.config.SettingsGUI = (function ($) {
         });
     };
 
+    /**
+    * Update preset url field
+    */
+    SettingsGUI.prototype.updatePresetUrl = function() {
+         $('#preset_url').val(this.generateSettingsUrl());
+    };
+
+    /**
+    * Update embed code field
+    */
+    SettingsGUI.prototype.updateEmbedCode = function() {
+         $('#embed_html').val(this.generateEmbedCode());
+    };
 
     /**
      * Show/Hide the settings panel.

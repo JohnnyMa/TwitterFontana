@@ -165,7 +165,7 @@ footer {
     color: #333;
     margin: 0 auto;
 
-    a { color: #80b43c; }
+    a { color: #08C; }
 
     h1 {
         font-size: 24px;
@@ -277,8 +277,22 @@ footer {
             width: 90%;
             height: 60px;
             background: #f9f9f9;
-            color: #888;
+            color: #333;
             font: 12px 'Courier New', sans-serif;
+        }
+
+        label {
+            padding: 6px;
+        }
+
+        .active {
+            background-color: #ccc;
+            font-weight: 600;
+            @include border-radius(3px);
+        }
+
+        #embed_html {
+            display: none;
         }
     }
 

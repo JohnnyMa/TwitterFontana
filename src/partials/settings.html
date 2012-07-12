@@ -4,13 +4,13 @@
     <form action="#" id="settingsForm">
         <fieldset class="main">
             <legend>Main</legend>
-            <label for="twitter_search">Your Twitter search - <a href="#search_operators" class="search-operators">search operators</a></label>
+            <label for="twitter_search">Your Twitter search - <a href="#search_operators" class="search-operators">advanced options</a></label>
             <div class="field">
                 <input type="text" name="twitter_search" id="twitter_search" value="" placeholder="Twitter search (Like #hashtag)">
             </div>
 
             <div class="search_operators" id="search_operators">
-                <h2>Search operators</h2>
+                <h2>Search options</h2>
                 <table cellspacing="0">
                     <thead>
                     <tr>
@@ -164,11 +164,11 @@
 
     <form id="embedForm">
         <fieldset class="url">
-            <div class="field-group">
-                <label for="embed_html">Embed html code</label>
                 <div class="field">
+                    <textarea name="preset_url" id="preset_url" readonly></textarea>
                     <textarea name="embed_html" id="embed_html" readonly></textarea>
                 </div>
+                <label for="preset_url" class="active">Preset URL</label> <label for="embed_html">Embed code</label>
             </div>
         </fieldset>
     </form>
