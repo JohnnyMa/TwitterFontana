@@ -119,10 +119,8 @@ Fontana.GUI = (function ($) {
      * Create HTML from a datasource object
      */
     GUI.prototype.formatMessage = function (message) {
-        var html;
         message.html = twttr.txt.autoLink(message.text);
-        html = $.tmpl(this.settings.get('message_template'), message);
-        return html;
+        return $.tmpl(this.settings.get('message_template'), message);
     };
 
     /**
