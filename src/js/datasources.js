@@ -98,7 +98,7 @@ Fontana.datasources = (function ($) {
      * Constructor takes a query for Twitter's search API.
      */
     Twitter = function (q) {
-        this.search_url = 'http://search.twitter.com/search.json?result_type=recent&include_entities=true&callback=?';
+        this.search_url = 'http://search.twitter.com/search.json?result_type=recent&callback=?';
         this.q = q;
         this.since_id = 0;
         this.refreshTimeout = null;
