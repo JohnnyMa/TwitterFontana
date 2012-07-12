@@ -113,6 +113,12 @@ Fontana.config.SettingsGUI = (function ($) {
                 });
             });
 
+            // Show/Hide advanced search operators on click
+            $('.search-operators', self.container).click(function (e) {
+                e.preventDefault();
+                $('#search_operators').slideToggle();
+            });
+
             // Select the settings url on click
             $('#embed_html').bind('click', function () {
                 $(this).select();
@@ -157,7 +163,8 @@ Fontana.config.SettingsGUI = (function ($) {
      * Show/Hide the settings panel.
      */
     SettingsGUI.prototype.toggle = function(show) {
-        $("body").toggleClass("settings", show);
+        $('body').toggleClass('settings', show);
+        $(window).trigger('resize');
     };
 
     return SettingsGUI;
