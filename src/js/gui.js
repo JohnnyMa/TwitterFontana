@@ -165,15 +165,10 @@ Fontana.GUI = (function ($) {
             effectName = this.settings.get('effect');
             this.effect = new Fontana.effects[effectName](this.container, '.fontana-message');
         }
-        if (!this.current) {
+        if (!this.current || !this.current.next().length) {
             next = $('.fontana-message:first', this.container);
         } else {
             next = this.current.next();
-        }
-
-        if(!next.length) {
-            this.scheduleAnimation();
-            return;
         }
 
         // update time
