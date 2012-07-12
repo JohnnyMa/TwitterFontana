@@ -10,6 +10,7 @@
     });
 }());
 
+
 /* Twitter Tweet button */
 !function(d,s,id){
     var js,fjs=d.getElementsByTagName(s)[0];
@@ -20,6 +21,7 @@
         fjs.parentNode.insertBefore(js,fjs);
     }
 }(document,"script","twitter-wjs");
+
 
 /* Google Webfonts */
 WebFontConfig = {
@@ -34,6 +36,7 @@ WebFontConfig = {
     s.parentNode.insertBefore(wf, s);
 }());
 
+
 /* Google Analytics*/
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-30289566-2']);
@@ -45,6 +48,7 @@ _gaq.push(['_trackPageview']);
     ga.src = 'http://www.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
 
 var _gauges = _gauges || [];
 (function() {
