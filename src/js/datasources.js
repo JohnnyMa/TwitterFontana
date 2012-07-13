@@ -110,7 +110,7 @@ Fontana.datasources = (function ($) {
             if (status === 'success') {
                 if (data.results && data.results.length) {
                     self.updateSinceId(data.results);
-                    self.trigger('messages', data.results.reverse());
+                    self.trigger('messages', data.results);
                 }
             }
             self.refreshTimeout = window.setTimeout(function () {
@@ -124,7 +124,7 @@ Fontana.datasources = (function ($) {
     };
 
     Twitter.prototype.updateSinceId = function (messages) {
-        this.since_id = messages[0].id + 1;
+        this.since_id = messages[0].id_str;
     };
 
     window.MicroEvent.mixin(Twitter);
