@@ -84,18 +84,19 @@ Fontana.GUI = (function ($) {
             self.handleMessages.call(self, messages);
         };
         this.datasource.bind('messages', this.datasourceListener);
-    }
+    };
 
     /**
      * Handle the messages from the datasource
      */
     GUI.prototype.handleMessages = function (messages) {
-        var self = this;
+        var self = this, elements = [];
         this.pause();
-        $.each(messages, function (i, message) {
-            self.container.append(self.formatMessage(message));
+        elements = $.map(messages, function (message) {
+            return self.formatMessage(message)[0];
         });
-        this.purgeMessages();
+        this.container.prepend(elements);
+        this.current = null;
         this.resume();
     };
 
@@ -103,12 +104,13 @@ Fontana.GUI = (function ($) {
      * Purge messages in the DOM (if necesarry)
      */
     GUI.prototype.purgeMessages = function (messages) {
-        var self = this, all, prev;
-        all = $('.fontana-message', self.container);
-        if (this.current && all.length >= 30) {
-            prev = $(this.current).prevAll('.fontana-message');
-            if (prev.length >= 15 && prev.length < Math.ceil(all.length / 2)) {
-                prev.slice(0, Math.floor(prev.length / 2)).remove();
+        var all = $('.fontana-message', this.container);
+        if (all.length >= 30) {
+            if (all.index(this.current) < all.length / 2) {
+                all.slice(Math.floor(all.length / 2)).remove();
+            }
+            else {
+                this.current.nextAll('.fontana-message').remove();
             }
         }
     };
@@ -175,8 +177,11 @@ Fontana.GUI = (function ($) {
         nextTime = $('time', next)
         nextTime.text(Fontana.utils.prettyDate(nextTime.attr('title')));
         // transition
-        this.effect.next(next);
-        this.current = next;
+        this.effect.next(next, function () {
+            // cleanup
+            self.current = next;
+            self.purgeMessages.call(self);
+        });
         this.scheduleAnimation();
     };
 

@@ -33,18 +33,25 @@ Fontana.effects = (function ($) {
         element.css({ top: Math.floor((baseHeight - element.height()) / 2) });
     };
 
-    Base.prototype.next = function (element) {
+    Base.prototype.next = function (element, callback) {
         var self = this;
         this.positionVerticalMiddle(element);
         if (this.cur_element) {
-            this.cur_element.animate(this.hide_prop, this.duration,
-                function () {
+            this.cur_element.animate(this.hide_prop, {
+                'duration': this.duration,
+                'complete': function () {
                     element.animate(self.before_show_prop, 0)
-                        .animate(self.show_prop, self.duration);
-                });
+                        .animate(self.show_prop, {
+                            'duration': this.duration,
+                            'complete': callback
+                        });
+                }});
         } else {
             element.animate(this.before_show_prop, 0)
-                .animate(this.show_prop, this.duration);
+                .animate(this.show_prop, {
+                    'duration': this.duration,
+                    'complete': callback
+                });
         }
         this.cur_element = element;
     };
