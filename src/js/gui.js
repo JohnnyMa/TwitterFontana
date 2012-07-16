@@ -174,7 +174,7 @@ Fontana.GUI = (function ($) {
         }
 
         // update time
-        nextTime = $('time', next)
+        nextTime = $('time', next);
         nextTime.text(Fontana.utils.prettyDate(nextTime.attr('title')));
         // transition
         this.effect.next(next, function () {

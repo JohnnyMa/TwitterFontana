@@ -98,19 +98,34 @@ Fontana.datasources = (function ($) {
      * Constructor takes a query for Twitter's search API.
      */
     Twitter = function (q) {
-        this.search_url = 'http://search.twitter.com/search.json?result_type=recent&callback=?';
-        this.q = q;
-        this.since_id = 0;
+        this.transformResponse = false;
+        this.params = {
+            'since_id': 1
+        }
+        if (q.indexOf('favorites:') > -1) {
+            this.params.screen_name = q.split('favorites:')[1];
+            this.search_url = 'http://api.twitter.com/1/favorites.json?callback=?';
+            this.transformResponse = true;
+        } else {
+            this.search_url = 'http://search.twitter.com/search.json?result_type=recent&callback=?';
+            this.params.q = q
+        }
         this.refreshTimeout = null;
     };
 
     Twitter.prototype.getMessages = function () {
         var self = this;
-        $.getJSON(this.search_url, {q: this.q, since_id: this.since_id}, function (data, status) {
+        $.getJSON(this.search_url, this.params, function (data, status) {
+            var results;
             if (status === 'success') {
-                if (data.results && data.results.length) {
-                    self.updateSinceId(data.results);
-                    self.trigger('messages', data.results);
+                if (self.transformResponse) {
+                    results = self.transformMessages(data);
+                } else {
+                    results = data.results;
+                }
+                if (results && results.length) {
+                    self.updateSinceId(results);
+                    self.trigger('messages', results);
                 }
             }
             self.refreshTimeout = window.setTimeout(function () {
@@ -119,12 +134,25 @@ Fontana.datasources = (function ($) {
         });
     };
 
+    /**
+     * Covert the messages objects from the Twitter API response
+     * to the Twitter Search response format.
+     */
+    Twitter.prototype.transformMessages = function (messages) {
+        return $.map(messages, function (message) {
+            var returnValue = $.extend({}, message);
+            returnValue.from_user = message.user.screen_name;
+            returnValue.profile_image_url = message.user.profile_image_url;
+            return returnValue;
+        });
+    };
+
     Twitter.prototype.stop = function () {
         window.clearTimeout(this.refreshTimeout);
     };
 
     Twitter.prototype.updateSinceId = function (messages) {
-        this.since_id = messages[0].id_str;
+        this.params.since_id = messages[0].id_str;
     };
 
     window.MicroEvent.mixin(Twitter);

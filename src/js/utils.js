@@ -5,11 +5,18 @@ Fontana.utils = (function ($) {
 
     prettyDate = function (time) {
         var date = new Date(time),
-            diff = (((new Date()).getTime() - date.getTime()) / 1000),
-            day_diff = Math.floor(diff / 86400);
+            now = new Date(),
+            diff = ((now.getTime() - date.getTime()) / 1000),
+            day_diff = Math.floor(diff / 86400),
+            monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 
         if (isNaN(day_diff) || day_diff < 0 || day_diff >= 31) {
-            return time;
+            if (day_diff <= 365) {
+                return date.getDate() + ' ' + monthNames[date.getMonth()];
+            } else {
+                return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
+            }
         }
         if (!day_diff && diff < 60) { return 'just now'; }
         if (!day_diff && diff < 120) { return '1 minute ago'; }
