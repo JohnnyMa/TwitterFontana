@@ -102,8 +102,8 @@ Fontana.datasources = (function ($) {
         this.params = {
             'since_id': 1
         }
-        if (q.indexOf('favorites:') > -1) {
-            this.params.screen_name = q.split('favorites:')[1];
+        if (q.indexOf('favorites:') == 0 && q.split('favorites:').length > 1) {
+            this.params.screen_name = q.split('favorites:')[1].split(' ')[0];
             this.search_url = 'http://api.twitter.com/1/favorites.json?callback=?';
             this.transformResponse = true;
         } else {
