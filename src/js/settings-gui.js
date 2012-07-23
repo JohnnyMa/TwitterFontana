@@ -174,6 +174,7 @@ Fontana.config.SettingsGUI = (function ($) {
     */
     SettingsGUI.prototype.updatePresetUrl = function() {
          $('#preset_url').val(this.generateSettingsUrl());
+         $('#share-on-twitter').attr('data-url', this.generateSettingsUrl());
     };
 
     /**

@@ -32,6 +32,20 @@ $(function () {
     });
 });
 
+
+/* Twitter Tweet button */
+!function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src="//platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+    }
+}(document,"script","twitter-wjs");
+
+
+/* Google Webfonts */
 WebFontConfig = {
     google: { families: ['Open+Sans:400,600:latin,latin-ext',
                          'Crete Round::latin,latin-ext',
@@ -40,8 +54,6 @@ WebFontConfig = {
                          'Handlee::latin,latin-ext',
                          'Imprima::latin,latin-ext'] }
 };
-
-
 (function() {
     var wf = document.createElement('script');
     wf.src = 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
@@ -50,6 +62,7 @@ WebFontConfig = {
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
 }());
+
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-30289566-2']);
