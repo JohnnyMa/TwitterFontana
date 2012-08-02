@@ -33,6 +33,6 @@ build:
 
 clean:
 	@echo "Cleaning..."
-	rm -rf ./build
-	rm twitterfontana.*.tgz
+	-rm -rf ./build
+	-rm twitterfontana.*.tgz
 	@echo "Done!"
