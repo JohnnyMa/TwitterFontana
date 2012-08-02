@@ -166,6 +166,11 @@ Fontana.config.SettingsGUI = (function ($) {
                     swatch.css('background-color', input.val());
                 });
             });
+
+            // enable the tweet button
+            try {
+                twttr.widgets.load()
+            catch (e) {}
         });
     };
 
