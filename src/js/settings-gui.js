@@ -59,7 +59,7 @@ Fontana.config.SettingsGUI = (function ($) {
 
     SettingsGUI.prototype.generateEmbedCode = function () {
         // first generate the url
-        var url = this.generateSettingsUrl({'embed': 'true'});
+        var url = this.generateSettingsUrl({'embed': 'true'}) + '&utm_source=site&utm_medium=embed&utm_campaign=twitterfontana';
         return '<iframe src="'+ url +'" frameborder="0" width="100%" height="300" scrolling="no"></iframe><a href="http://twitterfontana.com" target="_blank" title="Create your own Twitter Fountain">Powered by Twitter Fontana</a>';
     };
 
@@ -173,8 +173,8 @@ Fontana.config.SettingsGUI = (function ($) {
     * Update preset url field
     */
     SettingsGUI.prototype.updatePresetUrl = function() {
-         $('#preset_url').val(this.generateSettingsUrl());
-         $('#share-on-twitter').attr('data-url', this.generateSettingsUrl());
+         $('#preset_url').val(this.generateSettingsUrl() + '&utm_source=site&utm_medium=preset&utm_campaign=twitterfontana');
+         $('#share-on-twitter').attr('data-url', this.generateSettingsUrl() + '&utm_source=twitter&utm_medium=preset&utm_campaign=twitterfontana');
     };
 
     /**
