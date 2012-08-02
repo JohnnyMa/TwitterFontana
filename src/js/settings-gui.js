@@ -169,8 +169,8 @@ Fontana.config.SettingsGUI = (function ($) {
 
             // enable the tweet button
             try {
-                twttr.widgets.load()
-            catch (e) {}
+                twttr.widgets.load();
+            } catch (e) { }
         });
     };
 
